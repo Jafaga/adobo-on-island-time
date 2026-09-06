@@ -2,6 +2,10 @@
 
 **Filipino roots. Hawaiʻi raised. Made with aloha.**
 
+### [Visit the live cooking journal ↗](https://adobo-on-island-time.vercel.app)
+
+Hosted on Vercel · Automatically deployed from `main`
+
 A personal cooking journal by Justine Afaga, bringing together two things I love: making chicken adobo and building with code. No assignment, no deadline—just a project for fun.
 
 [Editing guide](EDITING.md) · [Deployment guide](VERCEL.md) · [Photo credits](PHOTO_CREDITS.md)

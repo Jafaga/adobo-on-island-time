@@ -1,30 +1,30 @@
-# Import this journal into Vercel
+# Vercel deployment
 
-Prepared destination: **Justine Afaga’s projects** (`justine-afagas-projects`).
-Repository: **Jafaga/adobo-on-island-time**, branch **main**.
-Suggested project name: **adobo-on-island-time**.
+[Live cooking journal](https://adobo-on-island-time.vercel.app) · [Project dashboard](https://vercel.com/justine-afagas-projects/adobo-on-island-time)
+
+The project **adobo-on-island-time** is linked to **Jafaga/adobo-on-island-time** in **Justine Afaga’s projects**. Pushes to `main` trigger production deployments through Vercel’s GitHub integration.
 
 ## Build settings
 
-`vercel.json` supplies these settings automatically:
+The repository’s `vercel.json` supplies the settings:
 
-- Framework preset: Other
-- Install command: `npm ci`
-- Build command: `npm run build:vercel`
-- Output directory: `dist/client`
-- Root directory: repository root
+| Setting          | Value                  |
+| ---------------- | ---------------------- |
+| Framework        | Other                  |
+| Install command  | `npm ci`               |
+| Build command    | `npm run build:vercel` |
+| Output directory | `dist/client`          |
+| Root directory   | Repository root        |
 
-No application environment variables are required. The Vercel build exports the page and its interactive React bundle to static files. Timeline zoom, navigation, and completion tracking continue to run in the browser.
+No application environment variables are required. Vinext exports HTML, CSS, images, and an interactive React bundle. Timeline animations and completion tracking run in the browser.
 
-In Vercel, import the GitHub repository into the workspace above and choose the project name. The Vercel GitHub integration must have access to this private repository. Importing does not make the GitHub repository public, but the production website can be publicly accessible, including the personal photos it contains. Confirm the intended audience before deployment.
-
-After import, GitHub pushes to `main` trigger Vercel production builds. Review the first deployment and its access settings in the Vercel dashboard.
-
-## Local verification
+## Check changes locally
 
 ```sh
 npm run check
 npm run build:vercel
 ```
 
-The existing Sites workflow still uses `npm run build`. The two build commands use different Vite modes; rebuild for the target you intend to publish. Do not package the Vercel export as a Sites Worker deployment.
+GitHub Actions also validates the code and both deployment builds. Vercel shows the build status and deployment history in the project dashboard.
+
+The original Sites deployment uses `npm run build`. Both commands write into `dist/`, so run the correct build immediately before packaging for that platform. Use the Sites packaging helper only after a Sites build.
