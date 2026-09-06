@@ -197,9 +197,9 @@ export default function AdoboJournal() {
               className="nav-code"
               target="_blank"
               rel="noreferrer"
-              aria-label="The code — view this project on GitHub"
+              aria-label="Github repository — view this project on GitHub"
             >
-              <Code2 size={16} /> The code <ArrowUpRight size={14} />
+              <Code2 size={16} /> Github repository <ArrowUpRight size={14} />
             </a>
           </nav>
         </header>

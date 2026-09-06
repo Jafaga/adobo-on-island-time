@@ -2145,3 +2145,16 @@ h2 {
     color: CanvasText;
   }
 }
+
+/* Keep the longer repository label clear of the brand on small phones. */
+@media (max-width: 420px) {
+  .site-header nav {
+    flex-shrink: 0;
+    width: 82px;
+  }
+  .site-header .nav-code {
+    white-space: normal;
+    text-align: right;
+    line-height: 1.3;
+  }
+}
