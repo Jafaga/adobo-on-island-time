@@ -13,7 +13,8 @@
     "format": "oxfmt",
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
-    "check": "npm run lint && npm run typecheck && npm test"
+    "check": "npm run lint && npm run typecheck && npm test",
+    "build:vercel": "vinext build --mode vercel"
   },
   "dependencies": {
     "@base-ui/react": "1.7.0",

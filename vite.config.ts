@@ -34,7 +34,16 @@ const localBindingConfig = {
     : [],
 };
 
-export default defineConfig(async () => {
+export default defineConfig(async ({ mode }) => {
+  // VERCEL IMPORT: this journal needs no server. Export HTML plus the interactive
+  // React bundle for Vercel; the normal build below continues to target Sites.
+  if (mode === 'vercel') {
+    return {
+      css: { postcss: { plugins: [tailwindcss()] } },
+      plugins: [vinext({ nextConfig: { output: 'export' } })],
+    };
+  }
+
   // Keep Wrangler and Miniflare state project-local. These are non-secret tool
   // settings; application environment belongs in ignored `.env*` files.
   process.env.WRANGLER_WRITE_LOGS ??= 'false';

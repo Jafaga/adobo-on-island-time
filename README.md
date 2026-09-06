@@ -1,81 +1,63 @@
 # Adobo on Island Time
 
-A personal cooking journal about chicken adobo, Filipino roots, and growing up in Hawaiʻi. Built for fun, with the care of a software project.
+**Filipino roots. Hawaiʻi raised. Made with aloha.**
 
-**[Private website preview](https://adobo-on-island-time.afagajustine.chatgpt.site)** · [Repository](https://github.com/Jafaga/adobo-on-island-time)
+A personal cooking journal by Justine Afaga, bringing together two things I love: making chicken adobo and building with code. No assignment, no deadline—just a project for fun.
 
-**Want to change a section? Start with [EDITING.md](EDITING.md).** Source files include `EDIT SECTION`, `EDIT STEP`, and `EDIT STYLE` comments.
+[Editing guide](EDITING.md) · [Deployment guide](VERCEL.md) · [Photo credits](PHOTO_CREDITS.md)
 
-![Justine’s actual finished chicken adobo](public/photos/justine-finished-adobo.jpg)
+<p align="center">
+  <img src="public/photos/justine-finished-adobo.jpg" alt="My finished chicken adobo" width="420" />
+  <br />
+  <em>My recipe. My actual finished batch.</em>
+</p>
 
-Photo: Justine Afaga — the actual finished batch. [Full image credits](PHOTO_CREDITS.md).
+## Explore the recipe
 
-## The experience
+Follow six cooking moments, from prepping the chicken to serving the finished dish. Hover over a timeline photo, then click to zoom into the directions, ingredients, cooking cues, and personal notes.
 
-Six clickable cooking milestones follow Justine’s own drumstick adobo method: prep the chicken, prep a little ginger, add two shoyus, turn every five minutes, finish with oyster sauce, and serve. The desktop timeline alternates above and below a central line, inspired by a project schedule. Tablets retain the horizontal axis with scrolling; phones use a vertical timeline. The timeline is the first screen, with circular milestones instead of cards. Hover brings a milestone forward. Clicking it expands from its actual screen position into a spacious cooking view, with ingredients, instructions, sensory cues, and a kitchen note. Closing reverses the animation into the originating milestone.
+- Animated timeline with previous/next navigation and completion tracking.
+- Responsive layouts for desktop, tablet, and phone.
+- Keyboard navigation, focus restoration, and reduced-motion support.
+- My two-shoyu recipe: Aloha Original, Silver Swan Special, ginger, and an oyster-sauce finish.
 
-- Previous/next navigation, per-session completion state, and explicit undo.
-- Keyboard access (Tab, arrow keys, Home/End, Enter), focus restoration, escape-to-close, a skip link, and descriptive step labels.
-- CSS hover motion and Web Animations API zoom transitions, with a pure, tested geometry calculation. Reduced-motion preferences bypass spatial animation.
-- An ingredient list, personal introduction, and a short explanation of the build.
+## Built with
 
-## Recipe content
+**React 19 · TypeScript · Vinext / Vite · Tailwind CSS · Base UI · Web Animations API**
 
-The recipe and family story were supplied by Justine. Justine’s signature combination is **Aloha Original Shoyu (regular sodium)** plus **Silver Swan Special Soy Sauce**, with a little ginger, ground black pepper, very little water, and oyster sauce added when the liquid is nearly reduced.
-
-Quantities, a shoyu ratio, a fixed serving count, and total cooking time were not supplied. The interface therefore uses cooking cues rather than invented elapsed timestamps. The five-minute turning interval is preserved as the only specified numeric timing. Ingredient amounts remain qualitative and depend on the batch.
-
-The chicken-washing and salt-rubbing routine is retained as a personal memory with Mom, separate from the practical no-rinse prep directions and a clearly labeled USDA safety note. Crosswise drumstick halves are preserved, with a butcher-cut suggestion for cutting through bone. Every piece must reach 165°F / 74°C before serving.
-
-Edit `lib/recipe.ts` to update ingredients, milestone markers, timing labels, instructions, cues, and kitchen notes. The current UI is composed for six milestones. If adding steps, also update the photo map, step-count labels, and timeline layout.
-
-The final timeline circle, expanded serving step, and large food image show Justine’s actual finished adobo. The remaining steps use ingredient and cooking reference photos. Change their paths, crop positions, and credits in `lib/site-media.ts`. The portrait and header logo are the images supplied by Justine. See [the editing guide](EDITING.md) for replacing any image.
+Recipe content, image data, and animation geometry are separate from the page layout. Completion tracking stays in browser memory for the session. The Vercel build exports static HTML and an interactive React bundle; no database or application server is required.
 
 ## Run locally
 
-Node.js 22.13 or newer is required.
+Use Node.js 22.13 or newer.
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Open the Local URL printed in the terminal. The development server stays local; deployment is a separate operation.
+Open the local URL printed in your terminal.
 
 ```sh
-npm run check   # lint, TypeScript, recipe invariants
-npm run build   # production Cloudflare Worker + client assets
+npm run check          # lint, TypeScript, and automated tests
+npm run build:vercel   # static export for Vercel
+npm run build          # existing Sites / Cloudflare build
 ```
 
-CI runs the same checks on pushes to `main` and on pull requests.
+## Make it your own
 
-## Engineering notes
+The source includes searchable `EDIT SECTION`, `EDIT STEP`, and `EDIT STYLE` comments.
 
-React 19 and TypeScript power the interface. Vinext runs the App Router application on Vite, and the Sites plugin packages it for Cloudflare Workers. The expanded cooking view uses the installed shadcn/Base UI Dialog primitive for modal semantics and focus management. A measured transform maps the expanded view to the clicked circle, so it grows from that position and returns there on close. Recipe data, cooking cues, and zoom geometry live separately from presentation.
+| Change                          | File                                                         |
+| ------------------------------- | ------------------------------------------------------------ |
+| Recipe steps and ingredients    | [lib/recipe.ts](lib/recipe.ts)                               |
+| Photos, crops, and credits      | [lib/site-media.ts](lib/site-media.ts)                       |
+| Page sections and interactions  | [components/adobo-journal.tsx](components/adobo-journal.tsx) |
+| Colors, typography, and layouts | [app/globals.css](app/globals.css)                           |
+| Timeline zoom geometry          | [lib/timeline-motion.ts](lib/timeline-motion.ts)             |
 
-There is no database, analytics, account system inside the app, or third-party API dependency. Completion state stays in React memory for the current page session and resets on reload. The private preview's access is enforced by the hosting platform.
+See [EDITING.md](EDITING.md) for the full guide and [VERCEL.md](VERCEL.md) for deployment settings. Automated checks cover recipe consistency, image files and attribution, and zoom geometry.
 
-- `app/page.tsx` — route entry point
-- `components/adobo-journal.tsx` — journal and interactive step panels
-- `lib/recipe.ts` — typed personal recipe, cooking cues, and the five-minute turning interval
-- `lib/site-media.ts` — photo paths, crop positions, descriptions, and licenses
-- `tests/site-media.test.mjs` — missing image files and attribution checks
-- `lib/timeline-motion.ts` — pure geometry for the zoom transition
-- `app/globals.css` — responsive layout, palette, typography, and motion
-- `tests/recipe.test.mjs` — personal recipe order, timing provenance, ingredient integrity, and separation of the family memory from safer prep
-- `tests/timeline-motion.test.mjs` — zoom coordinates across screen sizes and degenerate frames
-- `.github/workflows/ci.yml` — repeatable automated checks
+## Credits
 
-The generated component catalog in `components/ui` and its `use-mobile` hook are retained unchanged. Lint excludes that vendored starter catalog because it includes upstream lint violations; TypeScript still checks it. Application code remains under the strict starter lint rules.
-
-## Recipe and image credits
-
-Recipe and personal story: Justine Afaga. The former example recipe and its third-party recipe references have been removed.
-
-Practical prep guidance follows [USDA on washing food](https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/washing-food-does-it-promote-food). Temperature checks follow [USDA food thermometer guidance](https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/food-thermometers).
-
-Cooking photographs are credited and licensed individually in [PHOTO_CREDITS.md](PHOTO_CREDITS.md) and on the site. The finished dish is Justine’s actual batch; the other steps use reference images. The supplied Pngtree logo retains its watermarks; the portrait is Justine’s own supplied photo. The reference timeline screenshots guided the layout and are not redistributed here.
-
-## Validation
-
-Automated checks cover static analysis, type safety, recipe-data integrity, and the production build. A local HTTP request verifies the route renders. Full browser interaction and visual testing has not yet been performed.
+Recipe, personal story, and finished-dish photo by **Justine Afaga**. Ingredient images and the remaining cooking reference photo are documented in [PHOTO_CREDITS.md](PHOTO_CREDITS.md). The recipe includes linked USDA guidance for safer chicken preparation.
