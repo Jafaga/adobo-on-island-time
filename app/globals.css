@@ -1996,3 +1996,152 @@ h2 {
 .step-photos-pair img {
   width: 50%;
 }
+
+/* EDIT STYLE 15 — OPENING SEQUENCE / TWO-TONE TITLE
+ * Header + title first; upper moments at 0.8s; lower moments at 2s;
+ * remaining content at 2.7s. Delays apply only with no reduced-motion preference.
+ * Animate the slot, not its button, so hover and the click-to-zoom stay independent.
+ */
+.site-shell {
+  --entrance-upper: 0.8s;
+  --entrance-lower: 2s;
+  --entrance-rest: 2.7s;
+}
+.timeline-intro .cooking-title {
+  font-size: clamp(3.1rem, 6.7vw, 6rem);
+  line-height: 1.12;
+  letter-spacing: -0.055em;
+  margin: 18px 0 22px;
+  text-wrap: balance;
+}
+.title-invitation {
+  display: inline-block;
+  font-family: var(--sans);
+  font-weight: 500;
+  color: #3e5136;
+}
+@supports (background-clip: text) {
+  .title-invitation {
+    background: linear-gradient(110deg, #294d3f 0%, #596d42 52%, #8b6335 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+}
+.cooking-title .title-dish {
+  display: inline-block;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-style: italic;
+  color: #ac4727;
+  letter-spacing: -0.055em;
+}
+@keyframes entrance-rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes entrance-title {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.92);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(-3px) scale(1.015);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .site-header {
+    animation: entrance-rise 0.7s ease-out backwards;
+  }
+  .timeline-intro > .eyebrow {
+    animation: entrance-rise 0.65s 0.1s ease-out backwards;
+  }
+  .title-invitation {
+    animation: entrance-title 0.9s 0.2s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  }
+  .title-dish {
+    animation: entrance-title 0.9s 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  }
+  .timeline-intro > p:not(.eyebrow),
+  .timeline-instructions {
+    animation: entrance-rise 0.7s 0.6s ease-out backwards;
+  }
+  .timeline-legend,
+  .timeline::before,
+  .timeline::after {
+    animation: entrance-rise 0.7s 0.7s ease-out backwards;
+  }
+  .timeline-slot {
+    animation: entrance-rise 0.8s var(--moment-delay)
+      cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  }
+  .timeline-slot:nth-child(1) {
+    --moment-delay: var(--entrance-upper);
+  }
+  .timeline-slot:nth-child(3) {
+    --moment-delay: calc(var(--entrance-upper) + 0.15s);
+  }
+  .timeline-slot:nth-child(5) {
+    --moment-delay: calc(var(--entrance-upper) + 0.3s);
+  }
+  .timeline-slot:nth-child(2) {
+    --moment-delay: var(--entrance-lower);
+  }
+  .timeline-slot:nth-child(4) {
+    --moment-delay: calc(var(--entrance-lower) + 0.15s);
+  }
+  .timeline-slot:nth-child(6) {
+    --moment-delay: calc(var(--entrance-lower) + 0.3s);
+  }
+  .timeline-footer,
+  .timeline-photo-note,
+  .timeline-section > .recipe-note,
+  .site-shell main > section:not(.timeline-section),
+  .site-shell main > .recipe-sources,
+  .site-footer {
+    animation: entrance-rise 0.85s var(--entrance-rest) ease-out backwards;
+  }
+  /* A keyboard or deep-link visitor can jump ahead without waiting for motion. */
+  .site-shell
+    :is(header, section, details, footer, .timeline-slot):focus-within,
+  .site-shell main > section:target,
+  .timeline-section:target .timeline-slot {
+    animation: none;
+  }
+}
+@media (max-width: 650px) {
+  .timeline-intro .cooking-title {
+    font-size: clamp(3rem, 12vw, 4.4rem);
+  }
+  .cooking-title .title-dish {
+    display: block;
+  }
+  .brand small {
+    font-size: 0.625rem;
+    letter-spacing: 0.7px;
+  }
+  .site-header {
+    gap: 12px;
+  }
+  .site-header .nav-code {
+    white-space: nowrap;
+    font-size: 0.8rem;
+  }
+}
+@media (forced-colors: active) {
+  .title-invitation {
+    background: none;
+    color: CanvasText;
+  }
+}

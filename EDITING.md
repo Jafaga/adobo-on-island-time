@@ -51,6 +51,12 @@ Your portrait and logo have separate entries in the same file. Portrait zoom is 
 
 The supplied adobo PNG contains Pngtree watermarks. They are preserved. If you obtain a different logo file, replace the file or update `siteMedia.brand.src`.
 
+## Opening animation and title
+
+Search for `EDIT STYLE 15` in `app/globals.css`. `--entrance-upper`, `--entrance-lower`, and `--entrance-rest` control the staged opening delays. The header and title appear first; upper timeline moments follow, then lower moments and the rest of the page. The animation runs on page load and is skipped for reduced-motion users.
+
+`.title-invitation` controls the gradient and sans-serif font for “Let’s make”; `.title-dish` controls the italic serif and terracotta color for “adobo.” Edit the wording under `EDIT TITLE` in `components/adobo-journal.tsx`.
+
 ## Change the style
 
 Start with the color variables in `:root` near the top of `app/globals.css`. Many rules later in the file are phone/tablet overrides inside `@media` blocks. If a change works on desktop but not on your phone, check the last matching selector.

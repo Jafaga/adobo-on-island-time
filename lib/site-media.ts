@@ -8,7 +8,7 @@
 export const siteMedia = {
   brand: {
     src: '/adobo-logo.png',
-    alt: '', // Decorative: the adjacent "adobo. ON ISLAND TIME" text names the brand.
+    alt: '', // Decorative: the adjacent "adobo. FILIPINO LOCAL STYLE" names the brand.
   },
   portrait: {
     src: '/justine-portrait.jpg',

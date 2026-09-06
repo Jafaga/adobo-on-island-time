@@ -174,7 +174,7 @@ export default function AdoboJournal() {
           <a
             href="#top"
             className="brand"
-            aria-label="Adobo on Island Time home"
+            aria-label="Adobo — Filipino Local Style home"
           >
             <span className="brand-icon">
               <Image
@@ -188,13 +188,17 @@ export default function AdoboJournal() {
             </span>
             <span>
               adobo<span className="brand-dot">.</span>
-              <small>ON ISLAND TIME</small>
+              <small>FILIPINO LOCAL STYLE</small>
             </span>
           </a>
           <nav aria-label="Main navigation">
-            <a href="#cooking-timeline">The recipe</a>
-            <a href="#story">The story</a>
-            <a href="#behind-the-build" className="nav-code">
+            <a
+              href="https://github.com/Jafaga/adobo-on-island-time"
+              className="nav-code"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="The code — view this project on GitHub"
+            >
               <Code2 size={16} /> The code <ArrowUpRight size={14} />
             </a>
           </nav>
@@ -211,10 +215,11 @@ export default function AdoboJournal() {
               <p className="eyebrow">
                 <Sun size={16} /> FILIPINO ROOTS. HAWAIʻI RAISED.
               </p>
-              <h1 id="timeline-title">
-                One pot. Six moments.
-                <br />
-                <em>Let’s make adobo.</em>
+              {/* EDIT TITLE: the two spans have separate fonts, colors, and entrance timing.
+                  EDIT STYLE 15 in globals.css controls the full opening sequence. */}
+              <h1 id="timeline-title" className="cooking-title">
+                <span className="title-invitation">Let’s make</span>{' '}
+                <em className="title-dish">adobo.</em>
               </h1>
               <p>My two-shoyu chicken adobo, one little moment at a time.</p>
               <div className="timeline-instructions">
