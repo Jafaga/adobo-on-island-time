@@ -8,11 +8,11 @@ A personal cooking journal about chicken adobo, Filipino roots, and growing up i
 
 ## The experience
 
-Six clickable cooking milestones follow an estimated 90-minute journey. The desktop timeline alternates above and below a central line, inspired by a project schedule. Smaller screens use a compact grid or a vertical timeline. Each step opens a detailed panel with ingredients, instructions, sensory cues, and a kitchen note.
+Six clickable cooking milestones follow an estimated 90-minute journey. The desktop timeline alternates above and below a central line, inspired by a project schedule. Tablets retain the horizontal axis with scrolling; phones use a vertical timeline. The timeline is the first screen, with circular milestones instead of cards. Hover brings a milestone forward. Clicking it expands from its actual screen position into a spacious cooking view, with ingredients, instructions, sensory cues, and a kitchen note. Closing reverses the animation into the originating milestone.
 
 - Previous/next navigation, per-session completion state, and explicit undo.
-- Keyboard access, focus restoration, escape-to-close, a skip link, and descriptive step labels.
-- CSS motion for the photograph, step reveals, hover interactions, and panel transitions. Reduced-motion preferences are respected.
+- Keyboard access (Tab, arrow keys, Home/End, Enter), focus restoration, escape-to-close, a skip link, and descriptive step labels.
+- CSS hover motion and Web Animations API zoom transitions, with a pure, tested geometry calculation. Reduced-motion preferences bypass spatial animation.
 - An ingredient list, personal introduction, and a short explanation of the build.
 
 ## Make the recipe yours
@@ -43,15 +43,17 @@ CI runs the same checks on pushes to `main` and on pull requests.
 
 ## Engineering notes
 
-React 19 and TypeScript power the interface. Vinext runs the App Router application on Vite, and the Sites plugin packages it for Cloudflare Workers. The detail panel uses the installed shadcn/Base UI Sheet primitive for dialog semantics and focus management. Recipe data and elapsed-time calculations live separately from presentation.
+React 19 and TypeScript power the interface. Vinext runs the App Router application on Vite, and the Sites plugin packages it for Cloudflare Workers. The expanded cooking view uses the installed shadcn/Base UI Dialog primitive for modal semantics and focus management. A measured transform maps the expanded view to the clicked circle, so it grows from that position and returns there on close. Recipe data and elapsed-time calculations live separately from presentation.
 
 There is no database, analytics, account system inside the app, or third-party API dependency. Completion state stays in React memory for the current page session and resets on reload. The private preview's access is enforced by the hosting platform.
 
 - `app/page.tsx` — route entry point
 - `components/adobo-journal.tsx` — journal and interactive step panels
 - `lib/recipe.ts` — typed starter recipe and time calculations
+- `lib/timeline-motion.ts` — pure geometry for the zoom transition
 - `app/globals.css` — responsive layout, palette, typography, and motion
 - `tests/recipe.test.mjs` — timeline continuity, time formatting, and content integrity
+- `tests/timeline-motion.test.mjs` — zoom coordinates across screen sizes and degenerate frames
 - `.github/workflows/ci.yml` — repeatable automated checks
 
 The generated component catalog in `components/ui` and its `use-mobile` hook are retained unchanged. Lint excludes that vendored starter catalog because it includes upstream lint violations; TypeScript still checks it. Application code remains under the strict starter lint rules.

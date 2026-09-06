@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import Image from 'next/image';
 import {
   ArrowDown,
@@ -20,12 +20,13 @@ import {
   X,
 } from 'lucide-react';
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetTitle,
-} from '@/components/ui/sheet';
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { milestoneTransform, type Frame } from '@/lib/timeline-motion';
 import {
   recipe,
   formatElapsed,
@@ -40,12 +41,92 @@ export default function AdoboJournal() {
   const returnFocus = useRef<HTMLButtonElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
+  const sourceFrame = useRef<Frame | null>(null);
+  const openingAnimation = useRef<Animation | null>(null);
+  const closing = useRef(false);
+  const milestoneButtons = useRef<(HTMLButtonElement | null)[]>([]);
+  const bindPanel = useCallback((node: HTMLDivElement | null) => {
+    panelRef.current = node;
+    if (!node) {
+      openingAnimation.current?.cancel();
+      return;
+    }
+    if (
+      !sourceFrame.current ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      !node.animate
+    )
+      return;
+    const target = node.getBoundingClientRect();
+    openingAnimation.current = node.animate(
+      [
+        {
+          transform: milestoneTransform(sourceFrame.current, target),
+          opacity: 0.2,
+          borderRadius: '120px',
+        },
+        {
+          transform: 'translate(0, 0) scale(1)',
+          opacity: 1,
+          borderRadius: '24px',
+        },
+      ],
+      { duration: 650, easing: 'cubic-bezier(.19,1,.22,1)' },
+    );
+  }, []);
+  function closeStep() {
+    if (closing.current) return;
+    const node = panelRef.current;
+    if (
+      !node ||
+      !sourceFrame.current ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      !node.animate
+    ) {
+      setActiveStep(null);
+      return;
+    }
+    closing.current = true;
+    const currentTransform = getComputedStyle(node).transform;
+    openingAnimation.current?.cancel();
+    const target = node.getBoundingClientRect();
+    const destination =
+      returnFocus.current
+        ?.querySelector('.milestone-circle')
+        ?.getBoundingClientRect() ?? sourceFrame.current;
+    const animation = node.animate(
+      [
+        {
+          transform:
+            currentTransform === 'none' ? 'scale(1)' : currentTransform,
+          opacity: 1,
+          borderRadius: '24px',
+        },
+        {
+          transform: milestoneTransform(destination, target),
+          opacity: 0,
+          borderRadius: '120px',
+        },
+      ],
+      { duration: 360, easing: 'cubic-bezier(.55,0,.8,.4)', fill: 'forwards' },
+    );
+    const finish = () => {
+      closing.current = false;
+      setActiveStep(null);
+    };
+    void animation.finished.then(finish, finish);
+  }
   const step = activeStep === null ? null : recipe.steps[activeStep];
   function openStep(index: number, button: HTMLButtonElement) {
     returnFocus.current = button;
+    sourceFrame.current = (
+      button.querySelector('.milestone-circle') ?? button
+    ).getBoundingClientRect();
     setActiveStep(index);
   }
   function navigateStep(index: number) {
+    if (closing.current) return;
+    // Keep the journey in place; return to the milestone that opened this view.
     setActiveStep(index);
     requestAnimationFrame(() => {
       if (panelRef.current) panelRef.current.scrollTop = 0;
@@ -81,7 +162,137 @@ export default function AdoboJournal() {
           </nav>
         </header>
         <main>
-          <section className="hero" aria-labelledby="hero-title">
+          <section
+            id="cooking-timeline"
+            className="timeline-section"
+            aria-labelledby="timeline-title"
+          >
+            <div className="timeline-intro">
+              <p className="eyebrow">
+                <Sun size={16} /> FILIPINO ROOTS. HAWAIʻI RAISED.
+              </p>
+              <h1 id="timeline-title">
+                One pot. Six moments.
+                <br />
+                <em>Let’s make adobo.</em>
+              </h1>
+              <p>Follow the flavor, from the first clove to the last bite.</p>
+              <div className="timeline-instructions">
+                <span>
+                  <Clock3 size={15} /> ~{totalMinutes} minutes
+                </span>
+                <span>
+                  <Users size={15} /> Serves {recipe.servings}
+                </span>
+                <span>Hover to explore · click to zoom in</span>
+              </div>
+            </div>
+            <div className="timeline-legend">
+              <span>
+                <span className="legend-dot" /> YOUR COOKING TIMELINE
+              </span>
+              <span>ELAPSED TIME · ESTIMATES</span>
+            </div>
+            <div className="timeline-viewport">
+              <ol
+                className="timeline"
+                aria-label="Chicken adobo cooking milestones"
+              >
+                {recipe.steps.map((item, index) => {
+                  const Icon = stepIcons[index];
+                  const isComplete = completed.includes(item.id);
+                  return (
+                    <li
+                      key={item.id}
+                      className={`timeline-slot ${index % 2 ? 'below' : 'above'} ${isComplete ? 'is-complete' : ''}`}
+                    >
+                      <button
+                        ref={(node) => {
+                          milestoneButtons.current[index] = node;
+                        }}
+                        className="step-button"
+                        onClick={(event) =>
+                          openStep(index, event.currentTarget)
+                        }
+                        onKeyDown={(event) => {
+                          const next =
+                            event.key === 'Home'
+                              ? 0
+                              : event.key === 'End'
+                                ? recipe.steps.length - 1
+                                : ['ArrowRight', 'ArrowDown'].includes(
+                                      event.key,
+                                    )
+                                  ? (index + 1) % recipe.steps.length
+                                  : ['ArrowLeft', 'ArrowUp'].includes(event.key)
+                                    ? (index - 1 + recipe.steps.length) %
+                                      recipe.steps.length
+                                    : null;
+                          if (next !== null) {
+                            event.preventDefault();
+                            milestoneButtons.current[next]?.focus();
+                          }
+                        }}
+                        aria-haspopup="dialog"
+                        aria-label={`${formatElapsed(stepStartMinutes(index))}, step ${index + 1}: ${item.shortTitle}, ${item.duration} minutes${isComplete ? ', completed' : ''}`}
+                      >
+                        <span className="timeline-node">
+                          {isComplete ? <Check size={12} /> : null}
+                        </span>
+                        <span className="timeline-stem" />
+                        <span className="milestone-label">
+                          <span className="step-number">0{index + 1}</span>
+                          <span className="step-title">{item.shortTitle}</span>
+                        </span>
+                        <span className="milestone-circle">
+                          {index === recipe.steps.length - 1 ? (
+                            <Image
+                              unoptimized
+                              src="/chicken-adobo.jpg"
+                              alt=""
+                              width={120}
+                              height={120}
+                            />
+                          ) : (
+                            <Icon size={43} strokeWidth={1.3} />
+                          )}
+                          {isComplete && (
+                            <span className="milestone-check">
+                              <Check size={14} />
+                            </span>
+                          )}
+                        </span>
+                        <span className="milestone-preview">
+                          {item.duration} min · Explore step{' '}
+                          <ArrowUpRight size={14} />
+                        </span>
+                        <span className="step-time">
+                          {formatElapsed(stepStartMinutes(index))}
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ol>
+            </div>
+            <div className="timeline-footer">
+              <span className="handwritten">
+                A good meal is a journey. Enjoy every step.
+              </span>
+              <span className="completion-status" aria-live="polite">
+                {completed.length > 0
+                  ? `${completed.length} of 6 moments complete`
+                  : 'Ready when you are.'}{' '}
+                <Sun size={17} />
+              </span>
+            </div>
+            <p className="starter-note">
+              <span>RECIPE IN PROGRESS</span> This is a starter recipe while I
+              put my own version into words. Timings are a guide; cook chicken
+              to 165°F / 74°C.
+            </p>
+          </section>
+          <section className="hero" aria-labelledby="destination-title">
             <div className="hero-copy">
               <p className="eyebrow">
                 <span className="tiny-sun">
@@ -89,19 +300,19 @@ export default function AdoboJournal() {
                 </span>{' '}
                 FILIPINO ROOTS. HAWAIʻI RAISED.
               </p>
-              <h1 id="hero-title">
+              <h2 id="destination-title">
                 Adobo, on
                 <br />
                 <em>island time.</em>
-              </h1>
+              </h2>
               <p className="hero-description">
                 A little soy. A little vinegar. A whole lot of home.
                 <br className="desktop-break" /> My cooking journal, one
                 delicious step at a time.
               </p>
               <div className="hero-actions">
-                <a className="button button-primary" href="#cooking-timeline">
-                  Let’s make adobo <ArrowDown size={17} />
+                <a className="button button-primary" href="#ingredients">
+                  Gather your ingredients <ArrowDown size={17} />
                 </a>
                 <span className="handwritten">Pull up a chair.</span>
               </div>
@@ -144,87 +355,6 @@ export default function AdoboJournal() {
                 </span>
               </figcaption>
             </figure>
-          </section>
-          <section
-            id="cooking-timeline"
-            className="timeline-section"
-            aria-labelledby="timeline-title"
-          >
-            <div className="section-topline">
-              <div>
-                <p className="eyebrow">FROM THE FIRST CLOVE TO THE LAST BITE</p>
-                <h2 id="timeline-title">Good food takes a little time.</h2>
-              </div>
-              <p className="timeline-hint">
-                Six little moments.
-                <br />
-                Tap a step to come into the kitchen. <ArrowDown size={15} />
-              </p>
-            </div>
-            <div className="timeline-legend">
-              <span>
-                <span className="legend-dot" /> YOUR COOKING TIMELINE
-              </span>
-              <span>ELAPSED TIME · ESTIMATES</span>
-            </div>
-            <ol className="timeline">
-              {recipe.steps.map((item, index) => {
-                const Icon = stepIcons[index];
-                const isComplete = completed.includes(item.id);
-                return (
-                  <li
-                    key={item.id}
-                    className={`timeline-slot ${index % 2 ? 'below' : 'above'} ${isComplete ? 'is-complete' : ''}`}
-                    style={{ '--order': index } as React.CSSProperties}
-                  >
-                    <button
-                      className="step-button"
-                      onClick={(event) => openStep(index, event.currentTarget)}
-                      aria-haspopup="dialog"
-                      aria-label={`${formatElapsed(stepStartMinutes(index))}, step ${index + 1}: ${item.shortTitle}, ${item.duration} minutes${isComplete ? ', completed' : ''}`}
-                    >
-                      <span className="timeline-node">
-                        {isComplete ? <Check size={12} /> : null}
-                      </span>
-                      <span className="timeline-stem" />
-                      <span className="step-card">
-                        <span className="step-card-top">
-                          <span className="step-icon">
-                            <Icon size={22} strokeWidth={1.5} />
-                          </span>
-                          <span className="step-number">0{index + 1}</span>
-                        </span>
-                        <span className="step-title">{item.shortTitle}</span>
-                        <span className="step-summary">{item.summary}</span>
-                        <span className="step-bottom">
-                          <span>{item.duration} MIN</span>
-                          <ArrowUpRight size={17} />
-                        </span>
-                      </span>
-                      <span className="step-time">
-                        {formatElapsed(stepStartMinutes(index))}
-                      </span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ol>
-            <div className="timeline-footer">
-              <span className="handwritten">
-                A good meal is a journey. Enjoy every step.
-              </span>
-              <span className="completion-status" aria-live="polite">
-                {completed.length > 0
-                  ? `${completed.length} of 6 moments complete`
-                  : 'Ready when you are.'}{' '}
-                <Sun size={17} />
-              </span>
-            </div>
-            <p className="starter-note">
-              <span>RECIPE IN PROGRESS</span> This is a starter recipe while I
-              put my own version into words. Timings are a guide; cook chicken
-              to 165°F / 74°C.
-            </p>
           </section>
           <section
             className="ingredients-section"
@@ -370,84 +500,117 @@ export default function AdoboJournal() {
           </a>
         </footer>
       </div>
-      <Sheet
+      <Dialog
         open={activeStep !== null}
         onOpenChange={(open) => {
-          if (!open) setActiveStep(null);
+          if (!open) closeStep();
         }}
       >
-        <SheetContent
-          ref={panelRef}
-          className="recipe-sheet"
+        <DialogContent
+          ref={bindPanel}
+          className="zoom-dialog"
           showCloseButton={false}
           finalFocus={returnFocus}
+          initialFocus={titleRef}
         >
           <div className="sheet-top">
-            <span className="eyebrow">THE COOKING JOURNAL</span>
-            <SheetClose className="close-button" aria-label="Close recipe step">
+            <DialogClose className="zoom-back">
+              <ArrowLeft size={18} /> Back to the timeline
+            </DialogClose>
+            <DialogClose
+              className="close-button"
+              aria-label="Close recipe step"
+            >
               <X size={22} />
-            </SheetClose>
+            </DialogClose>
           </div>
           {step && activeStep !== null && (
-            <div key={step.id} className="sheet-inner">
-              <p className="sheet-kicker">
-                STEP 0{activeStep + 1} / 06 <span>{step.phase}</span>
-              </p>
-              <SheetTitle ref={titleRef} tabIndex={-1} className="sheet-title">
-                {step.title}
-              </SheetTitle>
-              <SheetDescription className="sheet-description">
-                {step.summary}
-              </SheetDescription>
-              <div className="sheet-meta">
-                <span>
-                  <Clock3 size={16} /> About {step.duration} minutes
-                </span>
-                <span>At {formatElapsed(stepStartMinutes(activeStep))}</span>
-              </div>
-              <div className="step-needs">
-                <h3>Have these ready</h3>
-                <ul>
-                  {step.needs.map((need) => (
-                    <li key={need}>{need}</li>
-                  ))}
-                </ul>
-              </div>
-              <ol className="instruction-list">
-                {step.instructions.map((instruction, index) => (
-                  <li key={instruction}>
-                    <span>{index + 1}</span>
-                    <p>{instruction}</p>
-                  </li>
-                ))}
-              </ol>
-              <div className="cue-card">
-                <ChefHat size={21} />
-                <div>
-                  <h3>What to look for</h3>
-                  <p>{step.cue}</p>
+            <div key={step.id} className="sheet-inner focus-layout">
+              <div className="focus-heading">
+                <div className="focus-milestone" aria-hidden="true">
+                  {(() => {
+                    const Icon = stepIcons[activeStep];
+                    return activeStep === recipe.steps.length - 1 ? (
+                      <Image
+                        unoptimized
+                        src="/chicken-adobo.jpg"
+                        alt=""
+                        width={140}
+                        height={140}
+                      />
+                    ) : (
+                      <Icon size={48} strokeWidth={1.3} />
+                    );
+                  })()}
+                </div>
+                <p className="sheet-kicker">
+                  STEP 0{activeStep + 1} / 06 <span>{step.phase}</span>
+                </p>
+                <DialogTitle
+                  ref={titleRef}
+                  tabIndex={-1}
+                  className="sheet-title"
+                >
+                  {step.title}
+                </DialogTitle>
+                <DialogDescription className="sheet-description">
+                  {step.summary}
+                </DialogDescription>
+                <div className="sheet-meta">
+                  <span>
+                    <Clock3 size={16} /> About {step.duration} minutes
+                  </span>
+                  <span>At {formatElapsed(stepStartMinutes(activeStep))}</span>
                 </div>
               </div>
-              <div className="kitchen-note">
-                <span className="handwritten">A little kitchen note</span>
-                <p>{step.tip}</p>
+              <aside className="focus-aside">
+                <div className="step-needs">
+                  <h3>Have these ready</h3>
+                  <ul>
+                    {step.needs.map((need) => (
+                      <li key={need}>{need}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="cue-card">
+                  <ChefHat size={21} />
+                  <div>
+                    <h3>What to look for</h3>
+                    <p>{step.cue}</p>
+                  </div>
+                </div>
+                <div className="kitchen-note">
+                  <span className="handwritten">A little kitchen note</span>
+                  <p>{step.tip}</p>
+                </div>
+              </aside>
+              <div className="focus-directions">
+                <h3 className="directions-heading">Let’s do this.</h3>
+                <ol className="instruction-list">
+                  {step.instructions.map((instruction, index) => (
+                    <li key={instruction}>
+                      <span>{index + 1}</span>
+                      <p>{instruction}</p>
+                    </li>
+                  ))}
+                </ol>
+                <button
+                  className={`button complete-button ${completed.includes(step.id) ? 'completed' : ''}`}
+                  aria-pressed={completed.includes(step.id)}
+                  onClick={() =>
+                    setCompleted((current) =>
+                      current.includes(step.id)
+                        ? current.filter((id) => id !== step.id)
+                        : [...current, step.id],
+                    )
+                  }
+                >
+                  <Check size={17} />
+                  {completed.includes(step.id)
+                    ? 'Step complete · undo'
+                    : 'Mark this step complete'}
+                </button>
               </div>
-              <button
-                className={`button complete-button ${completed.includes(step.id) ? 'completed' : ''}`}
-                aria-pressed={completed.includes(step.id)}
-                onClick={() =>
-                  setCompleted((current) =>
-                    current.includes(step.id)
-                      ? current.filter((id) => id !== step.id)
-                      : [...current, step.id],
-                  )
-                }
-              >
-                <Check size={17} />
-                {completed.includes(step.id)
-                  ? 'Step complete · undo'
-                  : 'Mark this step complete'}
-              </button>
               <div className="step-navigation">
                 <button
                   disabled={activeStep === 0}
@@ -461,15 +624,15 @@ export default function AdoboJournal() {
                     Next step <ArrowRight size={16} />
                   </button>
                 ) : (
-                  <SheetClose>
+                  <DialogClose>
                     Back to the timeline <ArrowRight size={16} />
-                  </SheetClose>
+                  </DialogClose>
                 )}
               </div>
             </div>
           )}
-        </SheetContent>
-      </Sheet>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
