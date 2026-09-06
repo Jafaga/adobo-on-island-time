@@ -1,43 +1,60 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {
-  recipe,
-  totalMinutes,
-  formatElapsed,
-  stepStartMinutes,
-} from '../lib/recipe.ts';
+import { recipe } from '../lib/recipe.ts';
 
-test('timeline spans the complete recipe without gaps or negative durations', () => {
-  assert.ok(recipe.steps.length > 0);
-  let elapsed = 0;
-  for (const [index, step] of recipe.steps.entries()) {
-    assert.equal(stepStartMinutes(index), elapsed);
-    assert.ok(Number.isInteger(step.duration) && step.duration > 0);
-    elapsed += step.duration;
-  }
-  assert.equal(elapsed, totalMinutes);
-  assert.equal(totalMinutes, 90);
-});
-test('elapsed labels carry into hours and preserve leading zeroes', () => {
-  assert.equal(formatElapsed(0), '00:00');
-  assert.equal(formatElapsed(59), '00:59');
-  assert.equal(formatElapsed(60), '01:00');
-  assert.equal(formatElapsed(80), '01:20');
-  assert.equal(formatElapsed(125), '02:05');
-});
-test('every clickable step has a unique id and complete instruction content', () => {
+test('the six milestones follow Justine’s supplied process', () => {
+  assert.equal(recipe.status, 'personal');
+  assert.deepEqual(
+    recipe.steps.map((step) => step.id),
+    [
+      'drumsticks',
+      'ginger',
+      'two-shoyu',
+      'five-minute-turns',
+      'oyster-finish',
+      'serve',
+    ],
+  );
   assert.equal(
     new Set(recipe.steps.map((step) => step.id)).size,
     recipe.steps.length,
   );
   for (const step of recipe.steps) {
+    assert.ok(step.instructions.length >= 2);
     assert.ok(
-      step.instructions.length >= 2,
-      `${step.id}: needs full instructions`,
+      step.marker && step.timing && step.cue && step.tip && step.needs.length,
     );
-    assert.ok(
-      step.title && step.shortTitle && step.summary && step.cue && step.tip,
-    );
-    assert.ok(step.needs.length > 0);
   }
+});
+test('only the supplied turning interval is numeric; total times are not invented', () => {
+  assert.equal(
+    recipe.steps.find((step) => step.id === 'five-minute-turns')
+      .intervalMinutes,
+    5,
+  );
+  assert.equal(
+    recipe.steps.filter((step) => step.intervalMinutes !== undefined).length,
+    1,
+  );
+  assert.ok(recipe.steps.every((step) => !('duration' in step)));
+  assert.ok(!('servings' in recipe));
+});
+test('personal ingredients replace all filler seasoning and marinade ingredients', () => {
+  const ingredients = recipe.ingredients.map(([, name]) => name).join(' ');
+  assert.match(ingredients, /Aloha Original Shoyu/);
+  assert.match(ingredients, /Silver Swan Special Soy Sauce/);
+  assert.match(ingredients, /Oyster sauce/);
+  assert.match(ingredients, /ginger/i);
+  assert.doesNotMatch(
+    ingredients,
+    /vinegar|garlic|bay leaves|sugar|neutral oil/i,
+  );
+});
+test('the family memory is preserved separately from sourced safer-prep guidance', () => {
+  const prep = recipe.steps[0];
+  assert.match(prep.tip, /mom/);
+  assert.match(prep.tip, /massaging the chicken/);
+  assert.match(prep.safety.text, /salt does not disinfect/);
+  assert.match(prep.safety.url, /^https:\/\/www\.fsis\.usda\.gov\//);
+  assert.match(recipe.steps.at(-1).instructions.join(' '), /165°F \/ 74°C/);
 });

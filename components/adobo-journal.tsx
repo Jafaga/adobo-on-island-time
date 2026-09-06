@@ -27,13 +27,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { milestoneTransform, type Frame } from '@/lib/timeline-motion';
-import {
-  recipe,
-  formatElapsed,
-  stepStartMinutes,
-  totalMinutes,
-} from '@/lib/recipe';
-const stepIcons = [Utensils, Clock3, Flame, CookingPot, Leaf, Heart];
+import { recipe } from '@/lib/recipe';
+const stepIcons = [Utensils, Leaf, CookingPot, Clock3, Flame, Heart];
 
 export default function AdoboJournal() {
   const [activeStep, setActiveStep] = useState<number | null>(null);
@@ -176,13 +171,13 @@ export default function AdoboJournal() {
                 <br />
                 <em>Let’s make adobo.</em>
               </h1>
-              <p>Follow the flavor, from the first clove to the last bite.</p>
+              <p>My two-shoyu chicken adobo, one little moment at a time.</p>
               <div className="timeline-instructions">
                 <span>
-                  <Clock3 size={15} /> ~{totalMinutes} minutes
+                  <Clock3 size={15} /> {recipe.timingLabel}
                 </span>
                 <span>
-                  <Users size={15} /> Serves {recipe.servings}
+                  <Users size={15} /> {recipe.servingsLabel}
                 </span>
                 <span>Hover to explore · click to zoom in</span>
               </div>
@@ -191,7 +186,7 @@ export default function AdoboJournal() {
               <span>
                 <span className="legend-dot" /> YOUR COOKING TIMELINE
               </span>
-              <span>ELAPSED TIME · ESTIMATES</span>
+              <span>COOKING CUES · MY PROCESS</span>
             </div>
             <div className="timeline-viewport">
               <ol
@@ -234,7 +229,7 @@ export default function AdoboJournal() {
                           }
                         }}
                         aria-haspopup="dialog"
-                        aria-label={`${formatElapsed(stepStartMinutes(index))}, step ${index + 1}: ${item.shortTitle}, ${item.duration} minutes${isComplete ? ', completed' : ''}`}
+                        aria-label={`${item.marker}, step ${index + 1}: ${item.shortTitle}, ${item.timing}${isComplete ? ', completed' : ''}`}
                       >
                         <span className="timeline-node">
                           {isComplete ? <Check size={12} /> : null}
@@ -263,12 +258,9 @@ export default function AdoboJournal() {
                           )}
                         </span>
                         <span className="milestone-preview">
-                          {item.duration} min · Explore step{' '}
-                          <ArrowUpRight size={14} />
+                          Explore step <ArrowUpRight size={14} />
                         </span>
-                        <span className="step-time">
-                          {formatElapsed(stepStartMinutes(index))}
-                        </span>
+                        <span className="step-time">{item.marker}</span>
                       </button>
                     </li>
                   );
@@ -286,10 +278,11 @@ export default function AdoboJournal() {
                 <Sun size={17} />
               </span>
             </div>
-            <p className="starter-note">
-              <span>RECIPE IN PROGRESS</span> This is a starter recipe while I
-              put my own version into words. Timings are a guide; cook chicken
-              to 165°F / 74°C.
+            <p className="recipe-note">
+              <span>MY RECIPE, MY WAY</span> Aloha Original + Silver Swan
+              Special, a little ginger, and an oyster-sauce finish. I cook by
+              feel: quantities depend on the batch, and every piece needs to
+              reach 165°F / 74°C.
             </p>
           </section>
           <section className="hero" aria-labelledby="destination-title">
@@ -306,7 +299,7 @@ export default function AdoboJournal() {
                 <em>island time.</em>
               </h2>
               <p className="hero-description">
-                A little soy. A little vinegar. A whole lot of home.
+                Two shoyus. A little ginger. A whole lot of home.
                 <br className="desktop-break" /> My cooking journal, one
                 delicious step at a time.
               </p>
@@ -318,10 +311,10 @@ export default function AdoboJournal() {
               </div>
               <div className="recipe-meta">
                 <span>
-                  <Clock3 size={15} /> ~{totalMinutes} minutes
+                  <Clock3 size={15} /> {recipe.timingLabel}
                 </span>
                 <span>
-                  <Users size={15} /> Serves {recipe.servings}
+                  <Users size={15} /> {recipe.servingsLabel}
                 </span>
                 <span>
                   <Heart size={15} /> Made with aloha
@@ -335,7 +328,7 @@ export default function AdoboJournal() {
                   src="/chicken-adobo.jpg"
                   width="1536"
                   height="1024"
-                  alt="Illustration of glossy chicken adobo with garlic, bay leaves, and steamed rice in warm sunlight"
+                  alt="AI-created illustration of chicken adobo; not a photo of Justine’s exact recipe"
                   fetchPriority="high"
                 />
               </div>
@@ -348,10 +341,10 @@ export default function AdoboJournal() {
                 </span>
               </div>
               <figcaption>
-                <span className="caption-line" /> Savory, tangy, and always
+                <span className="caption-line" /> Savory, saucy, and always
                 worth the wait.
                 <span className="image-disclosure">
-                  AI-created illustration
+                  AI illustration · not my exact recipe
                 </span>
               </figcaption>
             </figure>
@@ -369,11 +362,11 @@ export default function AdoboJournal() {
                 <em>Something special.</em>
               </h2>
               <p>
-                Most of the magic is already in the pantry. Here’s what goes
-                into this starter pot of adobo.
+                This is what goes into my pot. I don’t use fixed measurements
+                here—start with the batch you want to make.
               </p>
               <span className="servings-note">
-                <Users size={16} /> For 4 hungry people
+                <Users size={16} /> {recipe.servingsLabel}
               </span>
             </div>
             <ul className="ingredient-list">
@@ -459,34 +452,29 @@ export default function AdoboJournal() {
             </div>
           </section>
           <details className="recipe-sources">
-            <summary>About this starter recipe & image</summary>
+            <summary>My recipe, safer prep & the illustration</summary>
             <p>
-              This starter draws on recipes by{' '}
+              This recipe and the “chicken massage” story come from my own
+              cooking process. My directions include safer no-rinse chicken
+              prep, following{' '}
               <a
-                href="https://panlasangpinoy.com/filipino-chicken-adobo-recipe/"
+                href="https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/washing-food-does-it-promote-food"
                 target="_blank"
                 rel="noreferrer"
               >
-                Vanjo Merano
+                USDA guidance on washing food
+              </a>
+              . Use a{' '}
+              <a
+                href="https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/food-thermometers"
+                target="_blank"
+                rel="noreferrer"
+              >
+                food thermometer
               </a>{' '}
-              and{' '}
-              <a
-                href="https://www.kawalingpinoy.com/chicken-adobo/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Lalaine Manalo
-              </a>
-              . Safe handling follows{' '}
-              <a
-                href="https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/grilling-and-food-safety"
-                target="_blank"
-                rel="noreferrer"
-              >
-                USDA guidance
-              </a>
-              . The food image is an AI-created illustration, ready to be
-              replaced by a photo from my own kitchen.
+              to confirm 165°F / 74°C in every piece. The AI illustration
+              predates this recipe and may show ingredients I don’t use; it is
+              not a photo from my kitchen.
             </p>
           </details>
         </main>
@@ -558,9 +546,9 @@ export default function AdoboJournal() {
                 </DialogDescription>
                 <div className="sheet-meta">
                   <span>
-                    <Clock3 size={16} /> About {step.duration} minutes
+                    <Clock3 size={16} /> {step.timing}
                   </span>
-                  <span>At {formatElapsed(stepStartMinutes(activeStep))}</span>
+                  <span>{step.marker}</span>
                 </div>
               </div>
               <aside className="focus-aside">
@@ -585,6 +573,16 @@ export default function AdoboJournal() {
                 </div>
               </aside>
               <div className="focus-directions">
+                {step.safety && (
+                  <div className="safe-prep-note">
+                    <h3>A note on safer prep</h3>
+                    <p>{step.safety.text}</p>
+                    <a href={step.safety.url} target="_blank" rel="noreferrer">
+                      USDA: washing food & food safety{' '}
+                      <ArrowUpRight size={14} />
+                    </a>
+                  </div>
+                )}
                 <h3 className="directions-heading">Let’s do this.</h3>
                 <ol className="instruction-list">
                   {step.instructions.map((instruction, index) => (

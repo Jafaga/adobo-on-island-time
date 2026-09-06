@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   icons: { icon: '/favicon.svg' },
   title: 'Adobo on Island Time — A cooking journal by Justine',
   description:
-    'Filipino roots, Hawaiʻi raised. Follow an interactive chicken adobo cooking timeline, from the first garlic clove to the last spoonful of sauce.',
+    'Justine’s chicken adobo: Aloha Original Shoyu, Silver Swan Special Soy Sauce, ginger, five-minute turns, and an oyster-sauce finish. Filipino roots, Hawaiʻi raised.',
 };
 export default function RootLayout({
   children,

@@ -326,7 +326,7 @@ h2 {
   font-size: 0.75rem;
   color: #706753;
 }
-.starter-note {
+.recipe-note {
   background: #efe9d8;
   border-radius: 4px;
   padding: 14px 19px;
@@ -335,7 +335,7 @@ h2 {
   line-height: 1.7;
   margin: 0;
 }
-.starter-note > span {
+.recipe-note > span {
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 1px;
@@ -971,11 +971,11 @@ h2 {
   .completion-status {
     font-size: 0.75rem;
   }
-  .starter-note {
+  .recipe-note {
     font-size: 0.875rem;
     padding: 15px;
   }
-  .starter-note > span {
+  .recipe-note > span {
     display: block;
     margin-bottom: 5px;
   }
@@ -1888,4 +1888,40 @@ h2 {
   .below .step-button:hover .milestone-label {
     translate: 0 0;
   }
+}
+
+.safe-prep-note {
+  background: #f1ead5;
+  border: 1px solid #d9cda9;
+  border-radius: 8px;
+  padding: 17px 19px;
+  margin: 0 0 25px;
+}
+.safe-prep-note h3 {
+  font-size: 0.8rem;
+  letter-spacing: 0.6px;
+  font-weight: 600;
+  margin: 0 0 9px;
+}
+.safe-prep-note p {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  margin: 0 0 9px;
+}
+.safe-prep-note a {
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.ingredient-amount {
+  min-width: 76px;
+}
+.sheet-meta {
+  flex-wrap: wrap;
+}
+.timeline-instructions {
+  gap: 12px 24px;
 }

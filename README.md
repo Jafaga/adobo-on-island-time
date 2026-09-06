@@ -8,20 +8,24 @@ A personal cooking journal about chicken adobo, Filipino roots, and growing up i
 
 ## The experience
 
-Six clickable cooking milestones follow an estimated 90-minute journey. The desktop timeline alternates above and below a central line, inspired by a project schedule. Tablets retain the horizontal axis with scrolling; phones use a vertical timeline. The timeline is the first screen, with circular milestones instead of cards. Hover brings a milestone forward. Clicking it expands from its actual screen position into a spacious cooking view, with ingredients, instructions, sensory cues, and a kitchen note. Closing reverses the animation into the originating milestone.
+Six clickable cooking milestones follow Justine’s own drumstick adobo method: prep the chicken, prep a little ginger, add two shoyus, turn every five minutes, finish with oyster sauce, and serve. The desktop timeline alternates above and below a central line, inspired by a project schedule. Tablets retain the horizontal axis with scrolling; phones use a vertical timeline. The timeline is the first screen, with circular milestones instead of cards. Hover brings a milestone forward. Clicking it expands from its actual screen position into a spacious cooking view, with ingredients, instructions, sensory cues, and a kitchen note. Closing reverses the animation into the originating milestone.
 
 - Previous/next navigation, per-session completion state, and explicit undo.
 - Keyboard access (Tab, arrow keys, Home/End, Enter), focus restoration, escape-to-close, a skip link, and descriptive step labels.
 - CSS hover motion and Web Animations API zoom transitions, with a pure, tested geometry calculation. Reduced-motion preferences bypass spatial animation.
 - An ingredient list, personal introduction, and a short explanation of the build.
 
-## Make the recipe yours
+## Recipe content
 
-The displayed recipe is **a clearly labeled starter**, not Justine's final personal recipe. No personal cooking traditions or family memories have been invented. The lead photo is an AI-created illustration.
+The recipe and family story were supplied by Justine. Her signature combination is **Aloha Original Shoyu (regular sodium)** plus **Silver Swan Special Soy Sauce**, with a little ginger, ground black pepper, very little water, and oyster sauce added when the liquid is nearly reduced.
 
-Edit `lib/recipe.ts` to supply your exact ingredient amounts, durations, instructions, cues, and tips. Elapsed times and the total duration are computed from the step data. Update the starter notice in `components/adobo-journal.tsx` once your recipe is finalized. Replace `public/chicken-adobo.jpg` with your own cooking photograph and update its alt text and caption.
+Quantities, a shoyu ratio, a fixed serving count, and total cooking time were not supplied. The interface therefore uses cooking cues rather than invented elapsed timestamps. The five-minute turning interval is preserved as the only specified numeric timing. Ingredient amounts remain qualitative and depend on the batch.
 
-The current UI is intentionally composed for six milestones. If adding steps, also update its icon list, step-count labels, and timeline layout.
+The chicken-washing and salt-rubbing routine is retained as a personal memory with her mom, separate from the practical no-rinse prep directions and a clearly labeled USDA safety note. Crosswise drumstick halves are preserved, with a butcher-cut suggestion for cutting through bone. Every piece must reach 165°F / 74°C before serving.
+
+Edit `lib/recipe.ts` to update ingredients, milestone markers, timing labels, instructions, cues, and kitchen notes. The current UI is composed for six milestones. If adding steps, also update the icon list, step-count labels, and timeline layout.
+
+The food image remains an AI-created illustration from the earlier design; its caption explicitly says it is not a photo of this exact recipe. Replace `public/chicken-adobo.jpg` with a kitchen photograph and update its alt text and disclosure when one is available.
 
 ## Run locally
 
@@ -43,16 +47,16 @@ CI runs the same checks on pushes to `main` and on pull requests.
 
 ## Engineering notes
 
-React 19 and TypeScript power the interface. Vinext runs the App Router application on Vite, and the Sites plugin packages it for Cloudflare Workers. The expanded cooking view uses the installed shadcn/Base UI Dialog primitive for modal semantics and focus management. A measured transform maps the expanded view to the clicked circle, so it grows from that position and returns there on close. Recipe data and elapsed-time calculations live separately from presentation.
+React 19 and TypeScript power the interface. Vinext runs the App Router application on Vite, and the Sites plugin packages it for Cloudflare Workers. The expanded cooking view uses the installed shadcn/Base UI Dialog primitive for modal semantics and focus management. A measured transform maps the expanded view to the clicked circle, so it grows from that position and returns there on close. Recipe data, cooking cues, and zoom geometry live separately from presentation.
 
 There is no database, analytics, account system inside the app, or third-party API dependency. Completion state stays in React memory for the current page session and resets on reload. The private preview's access is enforced by the hosting platform.
 
 - `app/page.tsx` — route entry point
 - `components/adobo-journal.tsx` — journal and interactive step panels
-- `lib/recipe.ts` — typed starter recipe and time calculations
+- `lib/recipe.ts` — typed personal recipe, cooking cues, and the five-minute turning interval
 - `lib/timeline-motion.ts` — pure geometry for the zoom transition
 - `app/globals.css` — responsive layout, palette, typography, and motion
-- `tests/recipe.test.mjs` — timeline continuity, time formatting, and content integrity
+- `tests/recipe.test.mjs` — personal recipe order, timing provenance, ingredient integrity, and separation of the family memory from safer prep
 - `tests/timeline-motion.test.mjs` — zoom coordinates across screen sizes and degenerate frames
 - `.github/workflows/ci.yml` — repeatable automated checks
 
@@ -60,9 +64,11 @@ The generated component catalog in `components/ui` and its `use-mobile` hook are
 
 ## Recipe and image credits
 
-The starter recipe is an original synthesis informed by [Vanjo Merano](https://panlasangpinoy.com/filipino-chicken-adobo-recipe/) and [Lalaine Manalo](https://www.kawalingpinoy.com/chicken-adobo/). Poultry handling and reused-marinade guidance follows [USDA](https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/grilling-and-food-safety). Chicken must reach 165°F / 74°C; times are estimates and never replace a thermometer.
+Recipe and personal story: Justine Afaga. The former example recipe and its third-party recipe references have been removed.
 
-The food illustration was generated specifically for this project. It does not depict Justine's actual finished dish. The supplied schedule screenshot guided the timeline layout and is not redistributed here.
+Practical prep guidance follows [USDA on washing food](https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/washing-food-does-it-promote-food). Temperature checks follow [USDA food thermometer guidance](https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/food-thermometers).
+
+The food illustration was generated for the initial design. It predates the personal recipe and may depict ingredients not used in it. The reference timeline screenshots guided the layout and are not redistributed here.
 
 ## Validation
 
