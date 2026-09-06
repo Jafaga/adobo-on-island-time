@@ -15,7 +15,6 @@ import {
   Clock3,
   Code2,
   Heart,
-  Moon,
   Sun,
   Users,
   X,
@@ -297,7 +296,7 @@ export default function AdoboJournal() {
             </div>
             <div className="timeline-footer">
               <span className="handwritten">
-                "I am not a good cook. But I learned how to make adobo because I care about my culture."
+                &ldquo;I am not a good cook. But I learned how to make adobo because I care about my culture.&rdquo;
               </span>
               <span className="completion-status" aria-live="polite">
                 {completed.length > 0
