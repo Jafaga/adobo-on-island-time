@@ -314,7 +314,8 @@ export default function AdoboJournal() {
               </span>
             </div>
             <p className="timeline-photo-note">
-              Real reference photos · <a href="#photo-credits">photo credits</a>
+              My finished adobo + ingredient references ·{' '}
+              <a href="#photo-credits">photo credits</a>
             </p>
             <p className="recipe-note">
               <span>MY RECIPE, MY WAY</span> Aloha Original + Silver Swan
@@ -365,8 +366,9 @@ export default function AdoboJournal() {
                 <Image
                   unoptimized
                   src={stepPhotos.serve.src}
-                  width={1400}
-                  height={1050}
+                  width={1200}
+                  height={1600}
+                  style={{ objectPosition: stepPhotos.serve.objectPosition }}
                   alt={stepPhotos.serve.alt}
                   fetchPriority="high"
                 />
@@ -522,11 +524,11 @@ export default function AdoboJournal() {
               to confirm 165°F / 74°C in every piece.
             </p>
             <p>
-              The cooking images are real reference photographs, not photos of
-              my own batch. Other adobo recipes may use different ingredients.
-              The ingredient photos were selected and supplied by me, including
-              both shoyu bottles. The two adobo photographs below retain their
-              listed licenses; all photos are framed for display.
+              The finished adobo photo is my actual batch, photographed in my
+              kitchen. I also selected and supplied the ingredient photos,
+              including both shoyu bottles. The five-minute-turns photo is a
+              reference from another cook and retains its listed license. Photos
+              are framed for display.
             </p>
             <ul className="photo-credit-list">
               {Object.entries(stepPhotos).map(([id, photo]) => (

@@ -6,9 +6,9 @@ A personal cooking journal about chicken adobo, Filipino roots, and growing up i
 
 **Want to change a section? Start with [EDITING.md](EDITING.md).** Source files include `EDIT SECTION`, `EDIT STEP`, and `EDIT STYLE` comments.
 
-![Reference photograph of chicken adobo](public/photos/serve.jpg)
+![Justine’s actual finished chicken adobo](public/photos/justine-finished-adobo.jpg)
 
-Photo: dbgg1979 / Wikimedia Commons, [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/). [Original and full image credits](PHOTO_CREDITS.md).
+Photo: Justine Afaga — the actual finished batch. [Full image credits](PHOTO_CREDITS.md).
 
 ## The experience
 
@@ -29,7 +29,7 @@ The chicken-washing and salt-rubbing routine is retained as a personal memory wi
 
 Edit `lib/recipe.ts` to update ingredients, milestone markers, timing labels, instructions, cues, and kitchen notes. The current UI is composed for six milestones. If adding steps, also update the photo map, step-count labels, and timeline layout.
 
-The six timeline circles and expanded steps use real reference photos. Change their paths, crop positions, and credits in `lib/site-media.ts`. The portrait and header logo are the images supplied by Justine. See [the editing guide](EDITING.md) for replacing any image.
+The final timeline circle, expanded serving step, and large food image show Justine’s actual finished adobo. The remaining steps use ingredient and cooking reference photos. Change their paths, crop positions, and credits in `lib/site-media.ts`. The portrait and header logo are the images supplied by Justine. See [the editing guide](EDITING.md) for replacing any image.
 
 ## Run locally
 
@@ -74,7 +74,7 @@ Recipe and personal story: Justine Afaga. The former example recipe and its thir
 
 Practical prep guidance follows [USDA on washing food](https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/washing-food-does-it-promote-food). Temperature checks follow [USDA food thermometer guidance](https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/food-thermometers).
 
-Cooking photographs are credited and licensed individually in [PHOTO_CREDITS.md](PHOTO_CREDITS.md) and on the site. They are reference photos of ingredients and other batches. The supplied Pngtree logo retains its watermarks; the portrait is Justine’s own supplied photo. The reference timeline screenshots guided the layout and are not redistributed here.
+Cooking photographs are credited and licensed individually in [PHOTO_CREDITS.md](PHOTO_CREDITS.md) and on the site. The finished dish is Justine’s actual batch; the other steps use reference images. The supplied Pngtree logo retains its watermarks; the portrait is Justine’s own supplied photo. The reference timeline screenshots guided the layout and are not redistributed here.
 
 ## Validation
 

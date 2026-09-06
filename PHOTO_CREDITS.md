@@ -1,14 +1,14 @@
 # Photo credits
 
-These are real reference photographs, not photographs of Justine’s recipe or batch. Other adobo photos may contain different ingredients.
+The final step and large food image show Justine’s actual finished batch. Other steps use ingredient and cooking reference photos.
 
-The two adobo photos below were resized for web delivery and retain their listed licenses. The interface frames photos using CSS.
+The cooking reference photo below retains its listed license. The interface frames photos using CSS.
 
 - `public/photos/five-minute-turns.jpg`: [Homemade chicken adobo 2.JPG](https://commons.wikimedia.org/wiki/File:Homemade_chicken_adobo_2.JPG) — © BrokenSphere / Wikimedia Commons, [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). Resized; cropped for display.
 
-- `public/photos/serve.jpg`: [Chicken adobo.jpg](https://commons.wikimedia.org/wiki/File:Chicken_adobo.jpg) — dbgg1979 / Wikimedia Commons, [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/). Resized; cropped for display.
-
 ## Images supplied by Justine
+
+- `public/photos/justine-finished-adobo.jpg`: Justine Afaga’s actual finished chicken adobo, supplied as `IMG_7341.HEIC`. Converted to JPEG and resized for web delivery, with no retouching. All rights reserved.
 
 - `public/justine-portrait.jpg`: Justine’s supplied portrait, resized for web delivery. Circular framing is CSS only; the source photo was not retouched.
 
@@ -37,3 +37,5 @@ These files remain in the repository but are no longer displayed. Their original
 - `public/photos/two-shoyu.jpg`: [Bowl of soy sauce.jpg](https://commons.wikimedia.org/wiki/File:Bowl_of_soy_sauce.jpg) — Bodhi Peace / Wikimedia Commons, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Resized; cropped for display.
 
 - `public/photos/oyster-finish.jpg`: [OysterSauce2.jpg](https://commons.wikimedia.org/wiki/File:OysterSauce2.jpg) — Gossipguy / Wikimedia Commons, [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). Resized; cropped for display.
+
+- `public/photos/serve.jpg`: [Chicken adobo.jpg](https://commons.wikimedia.org/wiki/File:Chicken_adobo.jpg) — dbgg1979 / Wikimedia Commons, [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/). Resized; cropped for display.
