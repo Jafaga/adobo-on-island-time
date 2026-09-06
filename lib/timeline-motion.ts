@@ -1,3 +1,6 @@
+// ANIMATION MATH: usually leave this alone when changing text or photos.
+// Adjust transition speed in components/adobo-journal.tsx instead.
+// tests/timeline-motion.test.mjs protects these viewport coordinate calculations.
 export type Frame = {
   left: number;
   top: number;

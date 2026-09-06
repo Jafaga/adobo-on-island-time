@@ -4,7 +4,11 @@ A personal cooking journal about chicken adobo, Filipino roots, and growing up i
 
 **[Private website preview](https://adobo-on-island-time.afagajustine.chatgpt.site)** · [Repository](https://github.com/Jafaga/adobo-on-island-time)
 
-![Illustrative chicken adobo](public/chicken-adobo.jpg)
+**Want to change a section? Start with [EDITING.md](EDITING.md).** Source files include `EDIT SECTION`, `EDIT STEP`, and `EDIT STYLE` comments.
+
+![Reference photograph of chicken adobo](public/photos/serve.jpg)
+
+Photo: dbgg1979 / Wikimedia Commons, [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/). [Original and full image credits](PHOTO_CREDITS.md).
 
 ## The experience
 
@@ -17,15 +21,15 @@ Six clickable cooking milestones follow Justine’s own drumstick adobo method: 
 
 ## Recipe content
 
-The recipe and family story were supplied by Justine. Her signature combination is **Aloha Original Shoyu (regular sodium)** plus **Silver Swan Special Soy Sauce**, with a little ginger, ground black pepper, very little water, and oyster sauce added when the liquid is nearly reduced.
+The recipe and family story were supplied by Justine. Justine’s signature combination is **Aloha Original Shoyu (regular sodium)** plus **Silver Swan Special Soy Sauce**, with a little ginger, ground black pepper, very little water, and oyster sauce added when the liquid is nearly reduced.
 
 Quantities, a shoyu ratio, a fixed serving count, and total cooking time were not supplied. The interface therefore uses cooking cues rather than invented elapsed timestamps. The five-minute turning interval is preserved as the only specified numeric timing. Ingredient amounts remain qualitative and depend on the batch.
 
-The chicken-washing and salt-rubbing routine is retained as a personal memory with her mom, separate from the practical no-rinse prep directions and a clearly labeled USDA safety note. Crosswise drumstick halves are preserved, with a butcher-cut suggestion for cutting through bone. Every piece must reach 165°F / 74°C before serving.
+The chicken-washing and salt-rubbing routine is retained as a personal memory with Mom, separate from the practical no-rinse prep directions and a clearly labeled USDA safety note. Crosswise drumstick halves are preserved, with a butcher-cut suggestion for cutting through bone. Every piece must reach 165°F / 74°C before serving.
 
-Edit `lib/recipe.ts` to update ingredients, milestone markers, timing labels, instructions, cues, and kitchen notes. The current UI is composed for six milestones. If adding steps, also update the icon list, step-count labels, and timeline layout.
+Edit `lib/recipe.ts` to update ingredients, milestone markers, timing labels, instructions, cues, and kitchen notes. The current UI is composed for six milestones. If adding steps, also update the photo map, step-count labels, and timeline layout.
 
-The food image remains an AI-created illustration from the earlier design; its caption explicitly says it is not a photo of this exact recipe. Replace `public/chicken-adobo.jpg` with a kitchen photograph and update its alt text and disclosure when one is available.
+The six timeline circles and expanded steps use real reference photos. Change their paths, crop positions, and credits in `lib/site-media.ts`. The portrait and header logo are the images supplied by Justine. See [the editing guide](EDITING.md) for replacing any image.
 
 ## Run locally
 
@@ -54,6 +58,8 @@ There is no database, analytics, account system inside the app, or third-party A
 - `app/page.tsx` — route entry point
 - `components/adobo-journal.tsx` — journal and interactive step panels
 - `lib/recipe.ts` — typed personal recipe, cooking cues, and the five-minute turning interval
+- `lib/site-media.ts` — photo paths, crop positions, descriptions, and licenses
+- `tests/site-media.test.mjs` — missing image files and attribution checks
 - `lib/timeline-motion.ts` — pure geometry for the zoom transition
 - `app/globals.css` — responsive layout, palette, typography, and motion
 - `tests/recipe.test.mjs` — personal recipe order, timing provenance, ingredient integrity, and separation of the family memory from safer prep
@@ -68,7 +74,7 @@ Recipe and personal story: Justine Afaga. The former example recipe and its thir
 
 Practical prep guidance follows [USDA on washing food](https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/washing-food-does-it-promote-food). Temperature checks follow [USDA food thermometer guidance](https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/food-thermometers).
 
-The food illustration was generated for the initial design. It predates the personal recipe and may depict ingredients not used in it. The reference timeline screenshots guided the layout and are not redistributed here.
+Cooking photographs are credited and licensed individually in [PHOTO_CREDITS.md](PHOTO_CREDITS.md) and on the site. They are reference photos of ingredients and other batches. The supplied Pngtree logo retains its watermarks; the portrait is Justine’s own supplied photo. The reference timeline screenshots guided the layout and are not redistributed here.
 
 ## Validation
 

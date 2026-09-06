@@ -1,3 +1,11 @@
+// EDIT RECIPE HERE — one object per timeline milestone, in cooking order.
+// id: stable key used by the photo map and completion state; keep it unchanged when renaming a title.
+// shortTitle + marker: labels beside the timeline circle. title + summary: expanded view heading.
+// timing: descriptive timing label; intervalMinutes: only a real stated recurring interval.
+// instructions: the numbered directions. needs: ingredient/equipment chips.
+// cue: what to look for. tip: your personal kitchen note. safety: optional sourced prep note.
+// Ingredient list and overall batch labels are at the bottom of this file.
+
 export type RecipeStep = {
   id: string;
   title: string;
@@ -17,6 +25,7 @@ export type RecipeStep = {
 // Justine's own method. Amounts and total cooking time were not specified:
 // show process cues, and preserve only the stated five-minute turning interval.
 const steps: RecipeStep[] = [
+  // EDIT STEP 01 — drumsticks
   {
     id: 'drumsticks',
     title: 'First, the drumsticks.',
@@ -38,6 +47,7 @@ const steps: RecipeStep[] = [
       url: 'https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/washing-food-does-it-promote-food',
     },
   },
+  // EDIT STEP 02 — ginger
   {
     id: 'ginger',
     title: 'Just a little ginger. :)',
@@ -54,6 +64,7 @@ const steps: RecipeStep[] = [
     tip: 'I keep the ginger light. It adds flavor without taking over the whole pot.',
     needs: ['A little fresh ginger', 'A clean knife and cutting board'],
   },
+  // EDIT STEP 03 — two-shoyu
   {
     id: 'two-shoyu',
     title: 'Two shoyus. One good pot.',
@@ -79,6 +90,7 @@ const steps: RecipeStep[] = [
       'A rondeau or saucepan with a lid',
     ],
   },
+  // EDIT STEP 04 — five-minute-turns
   {
     id: 'five-minute-turns',
     title: 'Five minutes. Flip. Repeat.',
@@ -97,6 +109,7 @@ const steps: RecipeStep[] = [
     tip: 'I like checking in every five minutes. It gives each side its turn to cook and take on that shoyu flavor.',
     needs: ['Tongs', 'The pot lid', 'A food thermometer'],
   },
+  // EDIT STEP 05 — oyster-finish
   {
     id: 'oyster-finish',
     title: 'The final ingredient.',
@@ -114,6 +127,7 @@ const steps: RecipeStep[] = [
     tip: 'Oyster sauce goes in at the end. That’s my final ingredient. :)',
     needs: ['Oyster sauce', 'Your nearly reduced pot of chicken'],
   },
+  // EDIT STEP 06 — serve
   {
     id: 'serve',
     title: 'Done. Ready to serve. :)',
@@ -132,6 +146,8 @@ const steps: RecipeStep[] = [
   },
 ];
 
+// EDIT RECIPE OVERVIEW — title, batch/timing labels, and the shopping list.
+// Each ingredient is [amount label, ingredient name, helpful note].
 export const recipe = {
   title: 'Justine’s two-shoyu chicken adobo',
   status: 'personal' as const,

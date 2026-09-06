@@ -1,3 +1,4 @@
+// EDIT BROWSER TITLE / SEARCH DESCRIPTION below; keep the site URL aligned with hosting.
 import type { Metadata } from 'next';
 import './globals.css';
 export const metadata: Metadata = {

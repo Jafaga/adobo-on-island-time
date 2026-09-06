@@ -1,4 +1,8 @@
 'use client';
+
+// PAGE EDITING MAP: search for EDIT SECTION below to jump to each visible area.
+// Recipe text lives in lib/recipe.ts; photo paths/credits live in lib/site-media.ts.
+// Colors, sizes, responsive layouts, and photo crops live in app/globals.css.
 import { useCallback, useRef, useState } from 'react';
 import Image from 'next/image';
 import {
@@ -10,13 +14,9 @@ import {
   ChefHat,
   Clock3,
   Code2,
-  CookingPot,
-  Flame,
   Heart,
-  Leaf,
   Sun,
   Users,
-  Utensils,
   X,
 } from 'lucide-react';
 import {
@@ -28,9 +28,11 @@ import {
 } from '@/components/ui/dialog';
 import { milestoneTransform, type Frame } from '@/lib/timeline-motion';
 import { recipe } from '@/lib/recipe';
-const stepIcons = [Utensils, Leaf, CookingPot, Clock3, Flame, Heart];
+import { siteMedia, stepPhotos } from '@/lib/site-media';
 
 export default function AdoboJournal() {
+  // INTERACTION STATE: null shows the timeline; a number opens that recipe step.
+  // Completed steps are session-only and reset when the page reloads.
   const [activeStep, setActiveStep] = useState<number | null>(null);
   const [completed, setCompleted] = useState<string[]>([]);
   const returnFocus = useRef<HTMLButtonElement | null>(null);
@@ -40,6 +42,7 @@ export default function AdoboJournal() {
   const openingAnimation = useRef<Animation | null>(null);
   const closing = useRef(false);
   const milestoneButtons = useRef<(HTMLButtonElement | null)[]>([]);
+  // ZOOM IN: duration is in milliseconds. Keep the reduced-motion guard.
   const bindPanel = useCallback((node: HTMLDivElement | null) => {
     panelRef.current = node;
     if (!node) {
@@ -69,6 +72,7 @@ export default function AdoboJournal() {
       { duration: 650, easing: 'cubic-bezier(.19,1,.22,1)' },
     );
   }, []);
+  // ZOOM OUT: return to the circle that opened the view, even after Next/Previous.
   function closeStep() {
     if (closing.current) return;
     const node = panelRef.current;
@@ -134,6 +138,7 @@ export default function AdoboJournal() {
         Skip to cooking steps
       </a>
       <div className="site-shell" id="top">
+        {/* EDIT SECTION 01 — HEADER: brand image, site name, and navigation links. */}
         <header className="site-header">
           <a
             href="#top"
@@ -141,7 +146,14 @@ export default function AdoboJournal() {
             aria-label="Adobo on Island Time home"
           >
             <span className="brand-icon">
-              <CookingPot size={24} strokeWidth={1.6} />
+              <Image
+                unoptimized
+                src={siteMedia.brand.src}
+                alt={siteMedia.brand.alt}
+                width={80}
+                height={80}
+                priority
+              />
             </span>
             <span>
               adobo<span className="brand-dot">.</span>
@@ -157,6 +169,8 @@ export default function AdoboJournal() {
           </nav>
         </header>
         <main>
+          {/* EDIT SECTION 02 — TIMELINE: title, helper text, and milestone presentation.
+              Edit the actual step titles, markers, and directions in lib/recipe.ts. */}
           <section
             id="cooking-timeline"
             className="timeline-section"
@@ -194,7 +208,7 @@ export default function AdoboJournal() {
                 aria-label="Chicken adobo cooking milestones"
               >
                 {recipe.steps.map((item, index) => {
-                  const Icon = stepIcons[index];
+                  const photo = stepPhotos[item.id];
                   const isComplete = completed.includes(item.id);
                   return (
                     <li
@@ -240,17 +254,14 @@ export default function AdoboJournal() {
                           <span className="step-title">{item.shortTitle}</span>
                         </span>
                         <span className="milestone-circle">
-                          {index === recipe.steps.length - 1 ? (
-                            <Image
-                              unoptimized
-                              src="/chicken-adobo.jpg"
-                              alt=""
-                              width={120}
-                              height={120}
-                            />
-                          ) : (
-                            <Icon size={43} strokeWidth={1.3} />
-                          )}
+                          <Image
+                            unoptimized
+                            src={photo.src}
+                            alt=""
+                            width={160}
+                            height={160}
+                            style={{ objectPosition: photo.objectPosition }}
+                          />
                           {isComplete && (
                             <span className="milestone-check">
                               <Check size={14} />
@@ -278,6 +289,9 @@ export default function AdoboJournal() {
                 <Sun size={17} />
               </span>
             </div>
+            <p className="timeline-photo-note">
+              Real reference photos · <a href="#photo-credits">photo credits</a>
+            </p>
             <p className="recipe-note">
               <span>MY RECIPE, MY WAY</span> Aloha Original + Silver Swan
               Special, a little ginger, and an oyster-sauce finish. I cook by
@@ -285,6 +299,7 @@ export default function AdoboJournal() {
               reach 165°F / 74°C.
             </p>
           </section>
+          {/* EDIT SECTION 03 — FOOD INTRO: headline, description, food photo, and caption. */}
           <section className="hero" aria-labelledby="destination-title">
             <div className="hero-copy">
               <p className="eyebrow">
@@ -325,10 +340,10 @@ export default function AdoboJournal() {
               <div className="photo-frame">
                 <Image
                   unoptimized
-                  src="/chicken-adobo.jpg"
-                  width="1536"
-                  height="1024"
-                  alt="AI-created illustration of chicken adobo; not a photo of Justine’s exact recipe"
+                  src={stepPhotos.serve.src}
+                  width={1400}
+                  height={1050}
+                  alt={stepPhotos.serve.alt}
                   fetchPriority="high"
                 />
               </div>
@@ -344,11 +359,14 @@ export default function AdoboJournal() {
                 <span className="caption-line" /> Savory, saucy, and always
                 worth the wait.
                 <span className="image-disclosure">
-                  AI illustration · not my exact recipe
+                  {stepPhotos.serve.reference
+                    ? 'Reference photo · a different batch'
+                    : 'From my kitchen'}
                 </span>
               </figcaption>
             </figure>
           </section>
+          {/* EDIT SECTION 04 — INGREDIENTS: change the list in lib/recipe.ts. */}
           <section
             className="ingredients-section"
             id="ingredients"
@@ -381,19 +399,22 @@ export default function AdoboJournal() {
               ))}
             </ul>
           </section>
+          {/* EDIT SECTION 05 — A NOTE FROM JUSTINE: portrait, personal story, and signature. */}
           <section
             className="story-section"
             id="story"
             aria-labelledby="story-title"
           >
-            <div className="story-marker">
-              <Sun size={36} strokeWidth={1} />
-              <span>
-                ROOTED IN TWO PLACES.
-                <br />
-                MADE RIGHT HERE.
-              </span>
-            </div>
+            <figure className="story-portrait">
+              <Image
+                unoptimized
+                src={siteMedia.portrait.src}
+                alt={siteMedia.portrait.alt}
+                width={600}
+                height={900}
+                style={{ objectPosition: siteMedia.portrait.objectPosition }}
+              />
+            </figure>
             <div>
               <p className="eyebrow">A NOTE FROM JUSTINE</p>
               <h2 id="story-title">
@@ -413,6 +434,7 @@ export default function AdoboJournal() {
               <span className="handwritten signature">With aloha, Justine</span>
             </div>
           </section>
+          {/* EDIT SECTION 06 — THE CODE: portfolio explanation, skill tags, and GitHub link. */}
           <section
             className="build-section"
             id="behind-the-build"
@@ -451,8 +473,9 @@ export default function AdoboJournal() {
               </a>
             </div>
           </section>
-          <details className="recipe-sources">
-            <summary>My recipe, safer prep & the illustration</summary>
+          {/* EDIT SECTION 07 — CREDITS: keep photo attribution when using licensed photos. */}
+          <details className="recipe-sources" id="photo-credits">
+            <summary>My recipe, safer prep & photo credits</summary>
             <p>
               This recipe and the “chicken massage” story come from my own
               cooking process. My directions include safer no-rinse chicken
@@ -472,12 +495,44 @@ export default function AdoboJournal() {
               >
                 food thermometer
               </a>{' '}
-              to confirm 165°F / 74°C in every piece. The AI illustration
-              predates this recipe and may show ingredients I don’t use; it is
-              not a photo from my kitchen.
+              to confirm 165°F / 74°C in every piece.
+            </p>
+            <p>
+              The cooking images are real reference photographs, not photos of
+              my own batch. Other adobo recipes may use different ingredients.
+              The soy sauce photo is a generic reference. Photos are resized and
+              cropped for display; their original licenses are retained.
+            </p>
+            <ul className="photo-credit-list">
+              {Object.entries(stepPhotos).map(([id, photo]) => (
+                <li key={id}>
+                  {photo.sourceUrl ? (
+                    <a href={photo.sourceUrl} target="_blank" rel="noreferrer">
+                      {photo.subject}
+                    </a>
+                  ) : (
+                    photo.subject
+                  )}
+                  {' — '}
+                  {photo.author}
+                  {' · '}
+                  {photo.licenseUrl ? (
+                    <a href={photo.licenseUrl} target="_blank" rel="noreferrer">
+                      {photo.license}
+                    </a>
+                  ) : (
+                    photo.license
+                  )}
+                </li>
+              ))}
+            </ul>
+            <p>
+              Portrait supplied by Justine. Adobo logo supplied from Pngtree,
+              with its existing watermarks retained.
             </p>
           </details>
         </main>
+        {/* EDIT SECTION 08 — FOOTER: closing line and return link. */}
         <footer className="site-footer">
           <a href="#top" className="footer-brand">
             adobo.
@@ -488,6 +543,8 @@ export default function AdoboJournal() {
           </a>
         </footer>
       </div>
+      {/* EDIT SECTION 09 — EXPANDED COOKING VIEW: layout for every clicked milestone.
+          Keep the Dialog focus/close behavior for keyboard and screen-reader access. */}
       <Dialog
         open={activeStep !== null}
         onOpenChange={(open) => {
@@ -515,22 +572,24 @@ export default function AdoboJournal() {
           {step && activeStep !== null && (
             <div key={step.id} className="sheet-inner focus-layout">
               <div className="focus-heading">
-                <div className="focus-milestone" aria-hidden="true">
-                  {(() => {
-                    const Icon = stepIcons[activeStep];
-                    return activeStep === recipe.steps.length - 1 ? (
-                      <Image
-                        unoptimized
-                        src="/chicken-adobo.jpg"
-                        alt=""
-                        width={140}
-                        height={140}
-                      />
-                    ) : (
-                      <Icon size={48} strokeWidth={1.3} />
-                    );
-                  })()}
+                <div className="focus-milestone">
+                  <Image
+                    unoptimized
+                    src={stepPhotos[step.id].src}
+                    alt={stepPhotos[step.id].alt}
+                    width={220}
+                    height={220}
+                    style={{
+                      objectPosition: stepPhotos[step.id].objectPosition,
+                    }}
+                  />
                 </div>
+                <p className="step-photo-caption">
+                  {stepPhotos[step.id].reference
+                    ? 'Reference photo'
+                    : 'From my kitchen'}{' '}
+                  · {stepPhotos[step.id].subject}
+                </p>
                 <p className="sheet-kicker">
                   STEP 0{activeStep + 1} / 06 <span>{step.phase}</span>
                 </p>

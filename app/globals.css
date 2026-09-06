@@ -1,3 +1,9 @@
+/* STYLE EDITING MAP
+ * Search for EDIT STYLE below to find major sections.
+ * Base rules come first. Later @media rules override them for smaller screens.
+ * Edit the LAST matching selector when changing a responsive appearance.
+ * Palette is in :root; photo crop settings are near the end of this file.
+ */
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
@@ -20,6 +26,7 @@
   --font-heading: Georgia, 'Times New Roman', serif;
   --radius-lg: 1rem;
 }
+/* EDIT STYLE 01 — GLOBAL PALETTE / FONTS */
 :root {
   --background: #f9f6ed;
   --foreground: #382b20;
@@ -76,11 +83,13 @@ button:disabled {
   background: #efca72;
   color: #382b20;
 }
+/* EDIT STYLE 02 — PAGE WIDTH / OUTER SPACING */
 .site-shell {
   max-width: 1480px;
   padding: 0 64px;
   margin: 0 auto;
 }
+/* EDIT STYLE 03 — HEADER / BRAND */
 .site-header {
   height: 102px;
   border-bottom: 1px solid var(--border);
@@ -136,6 +145,7 @@ button:disabled {
   padding: 10px 16px;
   border-radius: 30px;
 }
+/* EDIT STYLE 04 — FOOD INTRO */
 .hero {
   display: grid;
   grid-template-columns: 1.08fr 1fr;
@@ -342,6 +352,7 @@ h2 {
   margin-right: 13px;
   color: #5c503e;
 }
+/* EDIT STYLE 05 — INGREDIENTS */
 .ingredients-section {
   padding: 70px 0;
   display: grid;
@@ -403,35 +414,13 @@ h2 {
   display: block;
   margin-top: 3px;
 }
+/* EDIT STYLE 06 — PERSONAL STORY */
 .story-section {
   display: grid;
   grid-template-columns: 0.55fr 1fr;
   gap: 90px;
   padding: 70px 60px;
   border-bottom: 1px solid var(--border);
-}
-.story-marker {
-  background: var(--primary);
-  color: #f4eacd;
-  aspect-ratio: 1;
-  max-width: 260px;
-  width: 100%;
-  border-radius: 50% 50% 46% 46%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 27px;
-  align-self: center;
-  text-align: center;
-}
-.story-marker span {
-  font-size: 0.75rem;
-  line-height: 1.9;
-  letter-spacing: 1.4px;
-}
-.story-marker svg {
-  color: #f3cb74;
 }
 .story-section h2 {
   font-size: 2.4375rem;
@@ -448,6 +437,7 @@ h2 {
   margin-top: 6px;
   transform: rotate(-4deg);
 }
+/* EDIT STYLE 07 — CODE / PORTFOLIO */
 .build-section {
   background: #edeadb;
   padding: 30px 35px;
@@ -509,6 +499,7 @@ h2 {
   text-underline-offset: 5px;
   white-space: nowrap;
 }
+/* EDIT STYLE 08 — FOOTER */
 .site-footer {
   display: flex;
   align-items: center;
@@ -542,6 +533,7 @@ h2 {
 .skip-link:focus {
   top: 15px;
 }
+/* EDIT STYLE 09 — SHARED COOKING VIEW DETAILS */
 .sheet-top {
   display: flex;
   align-items: center;
@@ -858,10 +850,6 @@ h2 {
   .story-section h2 {
     font-size: 2.125rem;
   }
-  .story-marker span {
-    font-size: 0.75rem;
-    letter-spacing: 0.3px;
-  }
   .build-section {
     padding: 28px;
   }
@@ -874,6 +862,7 @@ h2 {
     gap: 15px;
   }
 }
+/* PHONE OVERRIDES: these win over the desktop rules above. */
 @media (max-width: 650px) {
   .site-shell {
     padding: 0 22px;
@@ -1004,21 +993,6 @@ h2 {
     grid-template-columns: 1fr;
     gap: 28px;
     padding: 42px 0;
-  }
-  .story-marker {
-    width: auto;
-    max-width: none;
-    aspect-ratio: auto;
-    border-radius: 5px;
-    padding: 20px;
-    flex-direction: row;
-    gap: 21px;
-    justify-content: flex-start;
-    text-align: left;
-  }
-  .story-marker span {
-    font-size: 0.75rem;
-    letter-spacing: 1px;
   }
   .story-section h2 {
     font-size: 2.25rem;
@@ -1162,6 +1136,7 @@ h2 {
   }
 }
 /* The timeline is the primary surface. Milestones branch from one continuous axis. */
+/* EDIT STYLE 10 — MAIN TIMELINE / CIRCULAR MILESTONES */
 .timeline-section {
   padding: 36px 0 0;
   overflow: visible;
@@ -1501,6 +1476,7 @@ h2 {
   height: 300px;
 }
 /* Native dialog semantics, with a spatial expansion from the selected milestone. */
+/* EDIT STYLE 11 — EXPANDED VIEW / ZOOM SURFACE */
 .zoom-dialog[data-slot='dialog-content'] {
   width: min(1100px, calc(100vw - 48px));
   max-width: none;
@@ -1655,6 +1631,7 @@ h2 {
     font-size: 3rem;
   }
 }
+/* PHONE OVERRIDES: these win over the desktop rules above. */
 @media (max-width: 650px) {
   .timeline-intro {
     text-align: left;
@@ -1924,4 +1901,79 @@ h2 {
 }
 .timeline-instructions {
   gap: 12px 24px;
+}
+
+/* EDIT STYLE 12 — USER PHOTOS / CROPS
+ * Brand: object-fit: contain keeps the complete supplied PNG and its watermarks.
+ * Portrait: the frame crops the original photograph in CSS; no facial retouching.
+ * Decrease scale below to show more shoreline/body, or increase it for a tighter headshot.
+ * Move the crop center through portrait.objectPosition in lib/site-media.ts.
+ */
+.brand-icon {
+  width: 66px;
+  height: 66px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  flex-shrink: 0;
+}
+.brand-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.story-portrait {
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0;
+  align-self: center;
+  border: 6px solid #eee8d8;
+  box-shadow: 0 7px 24px #3e513612;
+}
+.story-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  scale: 1.65;
+  transform-origin: 50% 47%;
+  display: block;
+}
+@media (max-width: 650px) {
+  .brand-icon {
+    width: 42px;
+    height: 42px;
+  }
+  .story-portrait {
+    width: min(280px, 80vw);
+    margin: 0 auto;
+  }
+}
+
+/* EDIT STYLE 13 — PHOTO CAPTIONS & CREDITS: understated source labels. */
+.timeline-photo-note,
+.step-photo-caption {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.timeline-photo-note {
+  text-align: center;
+  margin: 12px 0 0;
+}
+.timeline-photo-note a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.step-photo-caption {
+  margin: 10px 0 16px;
+}
+.photo-credit-list {
+  padding-left: 18px;
+  margin: 14px 0;
+  font-size: 12px;
+  line-height: 1.9;
 }
