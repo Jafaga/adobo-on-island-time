@@ -15,6 +15,7 @@ import {
   Clock3,
   Code2,
   Heart,
+  Moon,
   Sun,
   Users,
   X,
@@ -213,7 +214,7 @@ export default function AdoboJournal() {
           >
             <div className="timeline-intro">
               <p className="eyebrow">
-                <Sun size={16} /> FILIPINO ROOTS. HAWAIʻI RAISED.
+                Justine Afaga presents... 
               </p>
               {/* EDIT TITLE: the two spans have separate fonts, colors, and entrance timing.
                   EDIT STYLE 15 in globals.css controls the full opening sequence. */}
@@ -221,22 +222,9 @@ export default function AdoboJournal() {
                 <span className="title-invitation">Let’s make</span>{' '}
                 <em className="title-dish">adobo.</em>
               </h1>
-              <p>My two-shoyu chicken adobo, one little moment at a time.</p>
-              <div className="timeline-instructions">
-                <span>
-                  <Clock3 size={15} /> {recipe.timingLabel}
-                </span>
-                <span>
-                  <Users size={15} /> {recipe.servingsLabel}
-                </span>
-                <span>Hover to explore · click to zoom in</span>
-              </div>
+              <p>My way of chicken adobo, passed on from my parents.</p>
             </div>
             <div className="timeline-legend">
-              <span>
-                <span className="legend-dot" /> YOUR COOKING TIMELINE
-              </span>
-              <span>COOKING CUES · MY PROCESS</span>
             </div>
             <div className="timeline-viewport">
               <ol
@@ -309,24 +297,17 @@ export default function AdoboJournal() {
             </div>
             <div className="timeline-footer">
               <span className="handwritten">
-                A good meal is a journey. Enjoy every step.
+                "I am not a good cook. But I learned how to make adobo because I care about my culture."
               </span>
               <span className="completion-status" aria-live="polite">
                 {completed.length > 0
                   ? `${completed.length} of 6 moments complete`
-                  : 'Ready when you are.'}{' '}
-                <Sun size={17} />
+                  : '- J.A.'}{' '}
               </span>
             </div>
-            <p className="timeline-photo-note">
-              My finished adobo + ingredient references ·{' '}
-              <a href="#photo-credits">photo credits</a>
-            </p>
             <p className="recipe-note">
-              <span>MY RECIPE, MY WAY</span> Aloha Original + Silver Swan
-              Special, a little ginger, and an oyster-sauce finish. I cook by
-              feel: quantities depend on the batch, and every piece needs to
-              reach 165°F / 74°C.
+              <span>MY RECIPE</span> Aloha Original + Silver Swan
+              Special, a little of water, a little ginger, and oyster sauce to finish.
             </p>
           </section>
           {/* EDIT SECTION 03 — FOOD INTRO: headline, description, food photo, and caption. */}
@@ -334,9 +315,8 @@ export default function AdoboJournal() {
             <div className="hero-copy">
               <p className="eyebrow">
                 <span className="tiny-sun">
-                  <Sun size={16} />
                 </span>{' '}
-                FILIPINO ROOTS. HAWAIʻI RAISED.
+                HAWAII BORN. FILIPINO RAISED
               </p>
               <h2 id="destination-title">
                 Adobo, on
