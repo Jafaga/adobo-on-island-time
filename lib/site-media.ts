@@ -17,10 +17,16 @@ export const siteMedia = {
   },
 };
 
-export type StepPhoto = {
+export type PhotoAsset = {
   src: string;
   alt: string;
   objectPosition: string;
+  fit?: 'cover' | 'contain';
+};
+
+export type StepPhoto = PhotoAsset & {
+  companion?: PhotoAsset; // Optional second bottle in the same milestone.
+  supplied?: boolean; // Supplied by Justine; does not imply photographer ownership.
   subject: string;
   author: string;
   sourceUrl?: string;
@@ -36,36 +42,39 @@ export type StepPhoto = {
 // the license (e.g. All rights reserved); sourceUrl/licenseUrl can be omitted.
 export const stepPhotos: Record<string, StepPhoto> = {
   drumsticks: {
-    src: '/photos/drumsticks.jpg',
-    alt: 'Raw chicken drumsticks, reference photograph',
+    src: '/photos/chicken-prep.jpg',
+    alt: 'Raw chicken pieces on a wooden cutting board',
     objectPosition: '50% 50%',
-    subject: 'Raw drumsticks',
-    author: 'Tamorlan / Wikimedia Commons',
-    sourceUrl: 'https://commons.wikimedia.org/wiki/File:Muslos_de_Pollo.jpg',
-    license: 'CC BY-SA 3.0',
-    licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0/',
+    subject: 'Chicken prep',
+    author: 'Image supplied by Justine',
+    license: 'Original source credit not provided',
+    supplied: true,
     reference: true,
   },
   ginger: {
-    src: '/photos/ginger.jpg',
-    alt: 'Fresh ginger root, reference photograph',
+    src: '/photos/fresh-ginger.jpg',
+    alt: 'Fresh ginger root on a pale stone surface',
     objectPosition: '50% 50%',
     subject: 'Fresh ginger',
-    author: 'Tiia Monto / Wikimedia Commons',
-    sourceUrl: 'https://commons.wikimedia.org/wiki/File:Ginger_2.jpg',
-    license: 'CC BY-SA 4.0',
-    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+    author: 'Image supplied by Justine',
+    license: 'Original source credit not provided',
+    supplied: true,
     reference: true,
   },
   'two-shoyu': {
-    src: '/photos/two-shoyu.jpg',
-    alt: 'A bowl of soy sauce, reference photograph; brand unspecified',
+    src: '/photos/aloha-shoyu.jpg',
+    alt: 'Aloha Original Blend Soy Sauce bottle',
     objectPosition: '50% 50%',
-    subject: 'Soy sauce',
-    author: 'Bodhi Peace / Wikimedia Commons',
-    sourceUrl: 'https://commons.wikimedia.org/wiki/File:Bowl_of_soy_sauce.jpg',
-    license: 'CC BY-SA 4.0',
-    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+    // Both bottles render side by side; these are separate original photo files.
+    companion: {
+      src: '/photos/silver-swan.webp',
+      alt: 'Silver Swan Special Soy Sauce bottle',
+      objectPosition: '50% 50%',
+    },
+    subject: 'Aloha Original + Silver Swan Special',
+    author: 'Images supplied by Justine',
+    license: 'Original source credits not provided',
+    supplied: true,
     reference: true,
   },
   'five-minute-turns': {
@@ -81,14 +90,14 @@ export const stepPhotos: Record<string, StepPhoto> = {
     reference: true,
   },
   'oyster-finish': {
-    src: '/photos/oyster-finish.jpg',
-    alt: 'Oyster sauce pouring into a spoon, reference photograph',
+    src: '/photos/shirakiku-oyster.webp',
+    alt: 'Shirakiku Oyster Flavored Sauce bottle',
     objectPosition: '50% 50%',
-    subject: 'Oyster sauce',
-    author: 'Gossipguy / Wikimedia Commons',
-    sourceUrl: 'https://commons.wikimedia.org/wiki/File:OysterSauce2.jpg',
-    license: 'CC BY-SA 3.0',
-    licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0/',
+    fit: 'contain',
+    subject: 'Shirakiku oyster sauce',
+    author: 'Image supplied by Justine',
+    license: 'Original source credit not provided',
+    supplied: true,
     reference: true,
   },
   serve: {

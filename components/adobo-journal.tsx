@@ -28,7 +28,38 @@ import {
 } from '@/components/ui/dialog';
 import { milestoneTransform, type Frame } from '@/lib/timeline-motion';
 import { recipe } from '@/lib/recipe';
-import { siteMedia, stepPhotos } from '@/lib/site-media';
+import { siteMedia, stepPhotos, type StepPhoto } from '@/lib/site-media';
+
+// SHARED PHOTO VIEW: companion adds the second shoyu bottle in both views.
+function StepImages({
+  photo,
+  decorative = false,
+}: {
+  photo: StepPhoto;
+  decorative?: boolean;
+}) {
+  const images = photo.companion ? [photo, photo.companion] : [photo];
+  return (
+    <span
+      className={`step-photos ${photo.companion ? 'step-photos-pair' : ''}`}
+    >
+      {images.map((item) => (
+        <Image
+          key={item.src}
+          unoptimized
+          src={item.src}
+          alt={decorative ? '' : item.alt}
+          width={220}
+          height={220}
+          style={{
+            objectPosition: item.objectPosition,
+            objectFit: item.fit ?? 'cover',
+          }}
+        />
+      ))}
+    </span>
+  );
+}
 
 export default function AdoboJournal() {
   // INTERACTION STATE: null shows the timeline; a number opens that recipe step.
@@ -254,14 +285,7 @@ export default function AdoboJournal() {
                           <span className="step-title">{item.shortTitle}</span>
                         </span>
                         <span className="milestone-circle">
-                          <Image
-                            unoptimized
-                            src={photo.src}
-                            alt=""
-                            width={160}
-                            height={160}
-                            style={{ objectPosition: photo.objectPosition }}
-                          />
+                          <StepImages photo={photo} decorative />
                           {isComplete && (
                             <span className="milestone-check">
                               <Check size={14} />
@@ -500,8 +524,9 @@ export default function AdoboJournal() {
             <p>
               The cooking images are real reference photographs, not photos of
               my own batch. Other adobo recipes may use different ingredients.
-              The soy sauce photo is a generic reference. Photos are resized and
-              cropped for display; their original licenses are retained.
+              The ingredient photos were selected and supplied by me, including
+              both shoyu bottles. The two adobo photographs below retain their
+              listed licenses; all photos are framed for display.
             </p>
             <ul className="photo-credit-list">
               {Object.entries(stepPhotos).map(([id, photo]) => (
@@ -573,16 +598,7 @@ export default function AdoboJournal() {
             <div key={step.id} className="sheet-inner focus-layout">
               <div className="focus-heading">
                 <div className="focus-milestone">
-                  <Image
-                    unoptimized
-                    src={stepPhotos[step.id].src}
-                    alt={stepPhotos[step.id].alt}
-                    width={220}
-                    height={220}
-                    style={{
-                      objectPosition: stepPhotos[step.id].objectPosition,
-                    }}
-                  />
+                  <StepImages photo={stepPhotos[step.id]} />
                 </div>
                 <p className="step-photo-caption">
                   {stepPhotos[step.id].reference

@@ -1977,3 +1977,22 @@ h2 {
   font-size: 12px;
   line-height: 1.9;
 }
+
+/* EDIT STYLE 14 — INGREDIENT PHOTOS: paired shoyus use two original images. */
+.step-photos {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+  background: #fff;
+}
+.step-photos img {
+  display: block;
+  min-width: 0;
+  flex: 1;
+  border-radius: 0;
+}
+.step-photos-pair img {
+  width: 50%;
+}

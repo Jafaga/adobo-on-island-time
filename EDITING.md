@@ -45,7 +45,7 @@ Keep the `id` the same when renaming a step. The photo map and completion state 
 4. Adjust `objectPosition` if the circular crop misses the subject. `50% 50%` means centered; a smaller second percentage shows more of the top.
 5. Update the source, author, and license information. For your own photographs, use your name and mark them as your own; remove the reference-photo label only when the photos actually show your cooking.
 
-The same entry supplies both the timeline circle and expanded step photo. The finished-dish photo is also used in the food introduction.
+The same entry supplies both the timeline circle and expanded step photo. The `two-shoyu` entry has a `companion` photo for the second bottle. Change either path separately; remove `companion` to use one photo. `fit: 'contain'` keeps a whole product bottle visible. `supplied: true` records an image you supplied without implying you photographed it. The finished-dish photo is also used in the food introduction.
 
 Your portrait and logo have separate entries in the same file. Portrait zoom is controlled by `.story-portrait img` in `app/globals.css`; lower `scale` to show more of the original photo. The source photo remains unchanged in composition; the webpage crops it for display.
 

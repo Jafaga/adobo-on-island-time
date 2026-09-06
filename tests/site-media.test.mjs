@@ -13,7 +13,7 @@ test('every recipe step has a local photo with usable description and attributio
   for (const photo of Object.values(stepPhotos)) {
     assert.ok(photo.alt && photo.subject && photo.author && photo.license);
     assert.equal(typeof photo.reference, 'boolean');
-    if (photo.reference) {
+    if (photo.reference && !photo.supplied) {
       assert.ok(URL.canParse(photo.sourceUrl));
       assert.ok(URL.canParse(photo.licenseUrl));
     }
@@ -23,7 +23,9 @@ test('every recipe step has a local photo with usable description and attributio
 test('all configured photos and personal images exist in public', () => {
   for (const media of [
     ...Object.values(siteMedia),
-    ...Object.values(stepPhotos),
+    ...Object.values(stepPhotos).flatMap((photo) =>
+      photo.companion ? [photo, photo.companion] : [photo],
+    ),
   ]) {
     assert.match(media.src, /^\/(?!\/)[a-zA-Z0-9/_-]+\.(jpg|png|webp)$/);
     const path = new URL(`../public${media.src}`, import.meta.url);
