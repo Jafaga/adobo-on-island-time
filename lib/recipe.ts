@@ -151,7 +151,7 @@ const steps: RecipeStep[] = [
 export const recipe = {
   title: 'Justine’s two-shoyu chicken adobo',
   status: 'personal' as const,
-  servingsLabel: 'Your batch, your choice',
+  servingsLabel: 'However much you want to serve',
   timingLabel: 'Turn every 5 minutes',
   ingredients: [
     [
