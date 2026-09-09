@@ -383,7 +383,7 @@ export default function AdoboJournal() {
             aria-labelledby="ingredients-title"
           >
             <div className="ingredients-intro">
-              <p className="eyebrow">THE SHORT & SAVORY LIST</p>
+              <p className="eyebrow">THE LIST</p>
               <h2 id="ingredients-title">
                 The ingredients.
                 <br />
