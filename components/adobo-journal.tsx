@@ -357,7 +357,6 @@ export default function AdoboJournal() {
                 />
               </div>
               <div className="photo-stamp">
-                <Sun size={25} strokeWidth={1.3} />
                 <span>
                   NAIMAS!
                   <br />
