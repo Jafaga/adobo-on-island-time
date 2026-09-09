@@ -385,13 +385,13 @@ export default function AdoboJournal() {
             <div className="ingredients-intro">
               <p className="eyebrow">THE SHORT & SAVORY LIST</p>
               <h2 id="ingredients-title">
-                Simple ingredients.
+                The ingredients.
                 <br />
-                <em>Something special.</em>
+                <em>Nothing special.</em>
               </h2>
               <p>
-                This is what goes into my pot. I don’t use fixed measurements
-                here—start with the batch you want to make.
+                This is what I use for my chicken adobo. I don’t have direct measurements, 
+                but it is up to you to decide how much you want.
               </p>
               <span className="servings-note">
                 <Users size={16} /> {recipe.servingsLabel}
