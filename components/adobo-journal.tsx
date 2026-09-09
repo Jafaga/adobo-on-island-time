@@ -323,15 +323,14 @@ export default function AdoboJournal() {
                 <em>island time.</em>
               </h2>
               <p className="hero-description">
-                Two shoyus. A little ginger. A whole lot of home.
-                <br className="desktop-break" /> My cooking journal, one
-                delicious step at a time.
+                Hawaii and Filipino shoyus. All from my familiy recipe.
+                <br className="desktop-break" /> A cooking journal.
               </p>
               <div className="hero-actions">
                 <a className="button button-primary" href="#ingredients">
                   Gather your ingredients <ArrowDown size={17} />
                 </a>
-                <span className="handwritten">Pull up a chair.</span>
+                <span className="handwritten">Study this!.</span>
               </div>
               <div className="recipe-meta">
                 <span>
@@ -341,7 +340,7 @@ export default function AdoboJournal() {
                   <Users size={15} /> {recipe.servingsLabel}
                 </span>
                 <span>
-                  <Heart size={15} /> Made with aloha
+                  <Heart size={15} /> Made with aloha 
                 </span>
               </div>
             </div>
@@ -360,9 +359,9 @@ export default function AdoboJournal() {
               <div className="photo-stamp">
                 <Sun size={25} strokeWidth={1.3} />
                 <span>
-                  GOOD FOOD.
+                  NAIMAS!
                   <br />
-                  SLOW MOMENTS.
+                  NANANAM, NASABUR!
                 </span>
               </div>
               <figcaption>
