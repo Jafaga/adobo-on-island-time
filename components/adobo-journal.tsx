@@ -365,12 +365,11 @@ export default function AdoboJournal() {
                 </span>
               </div>
               <figcaption>
-                <span className="caption-line" /> Savory, saucy, and always
-                worth the wait.
+                <span className="caption-line" /> "Don't burn the chicken, okey?!" — my mom, every time I make adobo.
                 <span className="image-disclosure">
                   {stepPhotos.serve.reference
                     ? 'Reference photo · a different batch'
-                    : 'From my kitchen'}
+                    : 'Photo of my actual adobo I cooked'}
                 </span>
               </figcaption>
             </figure>
