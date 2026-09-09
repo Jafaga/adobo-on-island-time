@@ -113,7 +113,7 @@ const steps: RecipeStep[] = [
   {
     id: 'oyster-finish',
     title: 'The final ingredient.',
-    shortTitle: 'Oyster-sauce finish',
+    shortTitle: 'Oyster sauce finish',
     marker: 'SAUCE LOW',
     timing: 'When the liquid is nearly reduced',
     phase: 'THE FINISHING TOUCH',
@@ -131,7 +131,7 @@ const steps: RecipeStep[] = [
   {
     id: 'serve',
     title: 'Done. Ready to serve. :)',
-    shortTitle: 'Kain tayo!',
+    shortTitle: 'Mangantayo!',
     marker: 'READY',
     timing: 'When every piece is cooked through',
     phase: 'HOPE YOU ENJOY',
@@ -155,21 +155,21 @@ export const recipe = {
   timingLabel: 'Turn every 5 minutes',
   ingredients: [
     [
-      'Your batch',
+      '1',
       'Chicken drumsticks',
-      'As many as your pot comfortably holds',
+      'Washed properly',
     ],
-    ['A little', 'Fresh ginger', 'Washed and sliced; just for flavor'],
-    ['By feel', 'Aloha Original Shoyu', 'The regular-sodium version'],
+    ['5', 'Fresh ginger', 'Washed and sliced; just for flavor'],
+    ['2', 'Aloha Original Shoyu', 'The regular-sodium version'],
     [
-      'By feel',
+      '6',
       'Silver Swan Special Soy Sauce',
       'Together with the Aloha shoyu',
     ],
-    ['By feel', 'Ground black pepper', 'Added with the shoyu and ginger'],
-    ['Very little', 'Water', 'A small splash, with more only if needed'],
-    ['To finish', 'Oyster sauce', 'Added when the liquid is nearly reduced'],
-    ['Optional', 'Rice for serving', 'If you like'],
+    ['3', 'Ground black pepper', 'Added with the shoyu and ginger'],
+    ['7', 'Water', 'A small splash, with more only if needed'],
+    ['4', 'Oyster sauce', 'Added when the liquid is nearly reduced and chicken is almost cooked through'],
+    ['8', 'Rice for serving', 'If you like'],
   ],
   steps,
 };
